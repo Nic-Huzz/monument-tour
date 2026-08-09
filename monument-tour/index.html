@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Monument Tour | Vibe Rise</title>
+  <meta name="description" content="Silent disco at Europe's most iconic monuments. Every Wednesday at sunset.">
+  <meta property="og:title" content="Monument Tour | Vibe Rise">
+  <meta property="og:description" content="Silent disco at Europe's most iconic monuments. Every Wednesday at sunset.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #FFD700; --gold-dim: #E6C200; --bg: #3a0f98; --surface: #2d0b78;
+      --surface-2: #250a65; --text: #F5F0E8; --text-muted: #b8a8e0; --border: #4a2aaa;
+    }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; min-height: 100dvh;
+      background: #e8e4ef; color: var(--text); display: flex; justify-content: center;
+      padding: 0; -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      width: 100%; max-width: 480px; padding: 0 16px 48px; display: flex; flex-direction: column;
+      align-items: center; background: var(--bg); border-radius: 16px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.15); margin: 12px auto;
+    }
+    .brand { font-family: 'Anton', sans-serif; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); padding: 20px 0 24px; }
+    .hero { text-align: center; margin-bottom: 28px; width: 100%; }
+    .hero-line { display: block; line-height: 1.05; }
+    .hero .whisper { font-family: 'Inter', sans-serif; font-weight: 400; font-size: clamp(13px, 3.5vw, 15px); letter-spacing: 4px; text-transform: uppercase; opacity: 0.5; margin-bottom: 4px; }
+    .hero .shout { font-family: 'Anton', sans-serif; font-size: clamp(36px, 12vw, 48px); text-transform: uppercase; letter-spacing: -0.5px; }
+    .hero .golden { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(40px, 13vw, 52px); color: var(--gold); text-transform: uppercase; letter-spacing: -0.5px; }
+    .hero .fade { font-family: 'Anton', sans-serif; font-size: clamp(28px, 9vw, 36px); text-transform: uppercase; letter-spacing: 1px; opacity: 0.45; }
+    .accent-bar { width: 40px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-dim)); border-radius: 2px; margin: 16px auto 0; }
+    .video-section { width: 100%; margin-bottom: 28px; }
+    .video-wrapper { width: 100%; aspect-ratio: 9/16; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); position: relative; cursor: pointer; }
+    .video-wrapper video { width: 100%; height: 100%; object-fit: cover; border: none; }
+    .subtitle { font-size: 14px; color: var(--text-muted); text-align: center; line-height: 1.6; margin-bottom: 28px; padding: 0 8px; }
+
+    .city-list { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+
+    .city-card {
+      display: flex; align-items: center; gap: 16px; padding: 18px 20px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.15s;
+      min-height: 48px;
+    }
+    .city-card:hover { border-color: var(--gold); transform: translateY(-1px); }
+
+    .city-date {
+      font-family: 'Anton', sans-serif; font-size: 28px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); white-space: nowrap; min-width: 64px;
+      text-align: center; line-height: 1.2;
+    }
+    .city-date .month { display: block; font-size: 13px; opacity: 0.7; letter-spacing: 3px; }
+
+    .city-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
+
+    .city-info { flex: 1; }
+    .city-name { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; }
+    .city-monument { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    .city-arrow { color: var(--gold); font-size: 18px; flex-shrink: 0; opacity: 0.6; }
+
+    .social-section { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .social-link {
+      display: flex; align-items: center; gap: 8px; padding: 14px 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text);
+      font-size: 14px; font-weight: 500; transition: border-color 0.2s, transform 0.15s; min-height: 48px;
+    }
+    .social-link:hover { border-color: var(--gold); transform: translateY(-1px); }
+    .social-link svg { width: 18px; height: 18px; fill: var(--gold); }
+    .footer { font-size: 11px; color: var(--text-muted); opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand">Vibe Rise</div>
+
+    <div class="hero">
+      <span class="hero-line whisper">Silent disco at</span>
+      <span class="hero-line shout">Europe's</span>
+      <span class="hero-line golden">Monuments</span>
+
+      <div class="accent-bar"></div>
+    </div>
+
+    <div class="video-section">
+      <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:8px;letter-spacing:1px;">Click for sound on</div>
+      <div class="video-wrapper" onclick="const v=this.querySelector('video');v.muted=!v.muted;this.previousElementSibling.style.display=v.muted?'block':'none';">
+        <video src="promo.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:12px;font-size:14px;font-weight:500;">
+        <a href="https://instagram.com/_huzz" target="_blank" style="color:var(--gold);text-decoration:none;">@_huzz</a>
+        <a href="https://instagram.com/spiffnuggs" target="_blank" style="color:var(--gold);text-decoration:none;">@spiffnuggs</a>
+      </div>
+    </div>
+
+    <p class="subtitle">Bringing this energy to every monument in partnership with Stay Generator.</p>
+
+    <div style="font-family:'Anton',sans-serif;font-size:clamp(14px,4vw,16px);text-transform:uppercase;letter-spacing:3px;color:var(--gold);text-align:center;margin-bottom:16px;">Pick your city</div>
+
+    <div class="city-list">
+      <a href="berlin.html" class="city-card">
+        <div class="city-date"><span class="month">Aug</span>13</div>
+        <div class="city-divider"></div>
+        <div class="city-info">
+          <div class="city-name">Berlin</div>
+          <div class="city-monument">Brandenburg Gate</div>
+        </div>
+        <div class="city-arrow">&#8250;</div>
+      </a>
+
+      <a href="copenhagen.html" class="city-card">
+        <div class="city-date"><span class="month">Aug</span>19</div>
+        <div class="city-divider"></div>
+        <div class="city-info">
+          <div class="city-name">Copenhagen</div>
+          <div class="city-monument">The Little Mermaid</div>
+        </div>
+        <div class="city-arrow">&#8250;</div>
+      </a>
+
+      <a href="amsterdam.html" class="city-card">
+        <div class="city-date"><span class="month">Aug</span>23</div>
+        <div class="city-divider"></div>
+        <div class="city-info">
+          <div class="city-name">Amsterdam</div>
+          <div class="city-monument">Rijksmuseum</div>
+        </div>
+        <div class="city-arrow">&#8250;</div>
+      </a>
+
+      <a href="paris.html" class="city-card">
+        <div class="city-date"><span class="month">Aug</span>27</div>
+        <div class="city-divider"></div>
+        <div class="city-info">
+          <div class="city-name">Paris</div>
+          <div class="city-monument">Eiffel Tower</div>
+        </div>
+        <div class="city-arrow">&#8250;</div>
+      </a>
+
+      <a href="barcelona.html" class="city-card">
+        <div class="city-date"><span class="month">Sep</span>2</div>
+        <div class="city-divider"></div>
+        <div class="city-info">
+          <div class="city-name">Barcelona</div>
+          <div class="city-monument">Sagrada Familia</div>
+        </div>
+        <div class="city-arrow">&#8250;</div>
+      </a>
+    </div>
+
+    <div class="social-section">
+      <a href="https://instagram.com/_huzz" target="_blank" class="social-link">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        @_huzz
+      </a>
+      <a href="https://instagram.com/spiffnuggs" target="_blank" class="social-link">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        @spiffnuggs
+      </a>
+    </div>
+
+    <div class="footer">Vibe Rise</div>
+  </div>
+
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+</body>
+</html>
