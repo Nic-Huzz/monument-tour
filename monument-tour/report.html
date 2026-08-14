@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monument Tour Report | Vibe Rise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #FFD700; --gold-dim: #E6C200; --bg: #1a0a45; --surface: #2d0b78;
+      --surface-2: #250a65; --text: #F5F0E8; --text-muted: #b8a8e0; --border: #4a2aaa;
+      --green: #4ade80; --red: #f87171; --blue: #60a5fa;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh;
+      background: var(--bg); color: var(--text); padding: 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    h1 {
+      font-family: 'Anton', sans-serif; font-size: 28px; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--gold); margin-bottom: 8px;
+    }
+    .subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
+
+    /* Summary cards */
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 32px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px 16px; text-align: center;
+    }
+    .card-value { font-family: 'Anton', sans-serif; font-size: 36px; color: var(--gold); }
+    .card-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
+
+    /* Section */
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--gold); margin-bottom: 16px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+
+    /* Events table */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      text-align: left; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border);
+    }
+    td { padding: 12px; border-bottom: 1px solid rgba(74,42,170,0.3); }
+    tr:hover { background: rgba(74,42,170,0.15); }
+    .city-name { font-weight: 700; color: var(--text); }
+    .monument { font-size: 12px; color: var(--text-muted); }
+    .num { font-family: 'Anton', sans-serif; font-size: 20px; color: var(--gold); text-align: center; }
+    .num-small { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; text-align: center; }
+    .status-done { color: var(--green); font-weight: 600; font-size: 12px; }
+    .status-upcoming { color: var(--text-muted); font-size: 12px; }
+    .editable {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px;
+      color: var(--gold); font-family: 'Anton', sans-serif; font-size: 18px;
+      width: 70px; text-align: center; padding: 4px;
+    }
+    .editable:focus { border-color: var(--gold); outline: none; }
+
+    /* Content table */
+    .content-table { font-size: 13px; }
+    .content-table td { padding: 10px 8px; }
+    .badge {
+      display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .badge-launch { background: rgba(96,165,250,0.2); color: var(--blue); }
+    .badge-event { background: rgba(74,222,128,0.2); color: var(--green); }
+    .badge-post-tour { background: rgba(248,113,113,0.2); color: var(--red); }
+
+    /* Add content form */
+    .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .form-row select, .form-row input {
+      padding: 10px 12px; background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 13px;
+      outline: none; flex: 1; min-width: 120px;
+    }
+    .form-row select { -webkit-appearance: none; appearance: none; color: var(--gold); }
+    .form-row input::placeholder { color: var(--text-muted); opacity: 0.5; }
+    .form-row input:focus, .form-row select:focus { border-color: var(--gold); }
+    .btn {
+      padding: 10px 20px; background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      color: #080808; font-family: 'Anton', sans-serif; font-size: 13px; letter-spacing: 2px;
+      text-transform: uppercase; border: none; border-radius: 8px; cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .btn:hover { transform: scale(1.02); }
+    .btn-small { padding: 6px 12px; font-size: 11px; letter-spacing: 1px; }
+    .btn-outline {
+      background: transparent; border: 1px solid var(--gold); color: var(--gold);
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
+    }
+
+    /* Engagement totals */
+    .engagement-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-top: 12px; }
+    .eng-card {
+      background: var(--surface-2); border-radius: 8px; padding: 12px 8px; text-align: center;
+    }
+    .eng-value { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--text); }
+    .eng-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+    .tab {
+      padding: 8px 16px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .tab.active { background: var(--gold); color: #080808; border-color: var(--gold); }
+    .tab:hover:not(.active) { border-color: var(--gold); color: var(--text); }
+
+    .hidden { display: none; }
+    .refresh-note { font-size: 11px; color: var(--text-muted); opacity: 0.5; margin-top: 4px; }
+
+    @media (max-width: 600px) {
+      .form-row { flex-direction: column; }
+      .form-row select, .form-row input { min-width: unset; }
+      table { font-size: 12px; }
+      td, th { padding: 8px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Monument Tour Report</h1>
+    <div class="subtitle">Vibe Rise x Generator — Europe Summer 2026 &nbsp;|&nbsp; <span id="last-updated"></span></div>
+
+    <!-- Summary cards -->
+    <div class="summary">
+      <div class="card">
+        <div class="card-value" id="total-signups">—</div>
+        <div class="card-label">Total Signups</div>
+      </div>
+      <div class="card">
+        <div class="card-value" id="total-attendees">—</div>
+        <div class="card-label">Attended</div>
+      </div>
+      <div class="card">
+        <div class="card-value" id="events-done">—</div>
+        <div class="card-label">Events Done</div>
+      </div>
+      <div class="card">
+        <div class="card-value" id="total-content">—</div>
+        <div class="card-label">Content Pieces</div>
+      </div>
+      <div class="card">
+        <div class="card-value" id="total-views">—</div>
+        <div class="card-label">Total Views</div>
+      </div>
+      <div class="card">
+        <div class="card-value" id="total-reach">—</div>
+        <div class="card-label">Total Reach</div>
+      </div>
+    </div>
+
+    <!-- Events -->
+    <div class="section">
+      <div class="section-title">Events</div>
+      <table>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Date</th>
+            <th style="text-align:center">Signups</th>
+            <th style="text-align:center">Pre-Party</th>
+            <th style="text-align:center">Monument</th>
+            <th style="text-align:center">After Party</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="events-table"></tbody>
+      </table>
+    </div>
+
+    <!-- Content tracking -->
+    <div class="section">
+      <div class="section-title">Content Tracker</div>
+
+      <div class="tabs">
+        <div class="tab active" data-filter="all">All</div>
+        <div class="tab" data-filter="launch">Launch</div>
+        <div class="tab" data-filter="event">Event</div>
+        <div class="tab" data-filter="post-tour">Post-Tour</div>
+      </div>
+
+      <!-- Engagement summary for filtered view -->
+      <div class="engagement-grid" id="engagement-summary"></div>
+
+      <table class="content-table" style="margin-top:16px;">
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Category</th>
+            <th>Platform</th>
+            <th>Description</th>
+            <th style="text-align:center">Views</th>
+            <th style="text-align:center">Likes</th>
+            <th style="text-align:center">Comments</th>
+            <th style="text-align:center">Reach</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="content-table"></tbody>
+      </table>
+    </div>
+
+    <!-- Add content form -->
+    <div class="section">
+      <div class="section-title">Add Content</div>
+      <form id="add-content-form">
+        <div class="form-row">
+          <select id="c-city">
+            <option value="Berlin">Berlin</option>
+            <option value="Copenhagen">Copenhagen</option>
+            <option value="Amsterdam">Amsterdam</option>
+            <option value="Paris">Paris</option>
+            <option value="Barcelona">Barcelona</option>
+          </select>
+          <select id="c-category">
+            <option value="launch">Launch</option>
+            <option value="event">Event</option>
+            <option value="post-tour">Post-Tour</option>
+          </select>
+          <select id="c-platform">
+            <option value="Instagram">Instagram</option>
+            <option value="TikTok">TikTok</option>
+            <option value="YouTube">YouTube</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <input type="text" id="c-description" placeholder="Description (e.g. Reel — flash mob reaction)">
+          <input type="url" id="c-url" placeholder="Content URL (optional)">
+        </div>
+        <div class="form-row">
+          <input type="number" id="c-views" placeholder="Views" min="0">
+          <input type="number" id="c-likes" placeholder="Likes" min="0">
+          <input type="number" id="c-comments" placeholder="Comments" min="0">
+          <input type="number" id="c-shares" placeholder="Shares" min="0">
+          <input type="number" id="c-saves" placeholder="Saves" min="0">
+          <input type="number" id="c-reach" placeholder="Reach" min="0">
+        </div>
+        <button type="submit" class="btn">Add Content</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const SB = 'https://qlwfcfypnoptsocdpxuv.supabase.co';
+    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsd2ZjZnlwbm9wdHNvY2RweHV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODY2NzUsImV4cCI6MjA3Mjc2MjY3NX0.fZLwb_VC2o8Sn3kp5H0_eJmhC8Hu8VtSHa2fpuqGNbY';
+    const headers = { 'apikey': KEY, 'Authorization': `Bearer ${KEY}`, 'Content-Type': 'application/json' };
+    const today = new Date().toISOString().split('T')[0];
+
+    let allContent = [];
+    let activeFilter = 'all';
+
+    function fmt(n) {
+      if (n === null || n === undefined) return '0';
+      if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+      return n.toString();
+    }
+
+    async function query(table, params = '') {
+      const res = await fetch(`${SB}/rest/v1/${table}?${params}`, { headers });
+      return res.json();
+    }
+
+    async function loadDashboard() {
+      const [signups, events, content] = await Promise.all([
+        query('tour_signups', 'select=city,email'),
+        query('tour_events', 'select=*&order=event_date.asc'),
+        query('tour_content', 'select=*&order=created_at.desc')
+      ]);
+
+      allContent = content;
+
+      // Count signups per city
+      const signupsByCity = {};
+      const uniqueEmails = new Set();
+      signups.forEach(s => {
+        if (!uniqueEmails.has(s.email)) {
+          signupsByCity[s.city] = (signupsByCity[s.city] || 0) + 1;
+          uniqueEmails.add(s.email);
+        }
+      });
+
+      const totalSignups = uniqueEmails.size;
+      const totalAttendees = events.reduce((sum, e) => sum + (e.actual_attendees || 0), 0);
+      const eventsDone = events.filter(e => e.event_date <= today && e.actual_attendees > 0).length;
+      const totalViews = content.reduce((sum, c) => sum + (c.views || 0), 0);
+      const totalReach = content.reduce((sum, c) => sum + (c.reach || 0), 0);
+
+      document.getElementById('total-signups').textContent = fmt(totalSignups);
+      document.getElementById('total-attendees').textContent = fmt(totalAttendees);
+      document.getElementById('events-done').textContent = `${eventsDone}/5`;
+      document.getElementById('total-content').textContent = content.length;
+      document.getElementById('total-views').textContent = fmt(totalViews);
+      document.getElementById('total-reach').textContent = fmt(totalReach);
+      document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleString();
+
+      // Events table
+      const eventsBody = document.getElementById('events-table');
+      eventsBody.innerHTML = events.map(e => {
+        const past = e.event_date <= today;
+        const sc = signupsByCity[e.city] || 0;
+        return `<tr>
+          <td><div class="city-name">${e.city}</div><div class="monument">${e.monument || ''}</div></td>
+          <td>${new Date(e.event_date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</td>
+          <td class="num">${sc}</td>
+          <td class="num-small">${e.pre_party_attendees || '—'}</td>
+          <td class="num-small">${e.monument_attendees || '—'}</td>
+          <td class="num-small">${e.post_party_attendees || '—'}</td>
+          <td><span class="${past ? 'status-done' : 'status-upcoming'}">${past ? (e.pre_party_attendees ? 'Done' : 'Past') : 'Upcoming'}</span></td>
+        </tr>`;
+      }).join('');
+
+      renderContent();
+    }
+
+    function renderContent() {
+      const filtered = activeFilter === 'all' ? allContent : allContent.filter(c => c.category === activeFilter);
+
+      // Engagement summary
+      const totals = { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0 };
+      filtered.forEach(c => {
+        totals.views += c.views || 0;
+        totals.likes += c.likes || 0;
+        totals.comments += c.comments || 0;
+        totals.shares += c.shares || 0;
+        totals.saves += c.saves || 0;
+        totals.reach += c.reach || 0;
+      });
+
+      document.getElementById('engagement-summary').innerHTML = Object.entries(totals).map(([k, v]) =>
+        `<div class="eng-card"><div class="eng-value">${fmt(v)}</div><div class="eng-label">${k}</div></div>`
+      ).join('');
+
+      // Content rows
+      const tbody = document.getElementById('content-table');
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:24px;">No content tracked yet. Add some below.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = filtered.map(c => {
+        const badgeClass = c.category === 'launch' ? 'badge-launch' : c.category === 'event' ? 'badge-event' : 'badge-post-tour';
+        const desc = c.content_url
+          ? `<a href="${c.content_url}" target="_blank" style="color:var(--gold);text-decoration:underline;">${c.description || 'Link'}</a>`
+          : (c.description || '—');
+        return `<tr>
+          <td class="city-name">${c.city}</td>
+          <td><span class="badge ${badgeClass}">${c.category}</span></td>
+          <td>${c.platform}</td>
+          <td>${desc}</td>
+          <td class="num-small">${fmt(c.views)}</td>
+          <td class="num-small">${fmt(c.likes)}</td>
+          <td class="num-small">${fmt(c.comments)}</td>
+          <td class="num-small">${fmt(c.reach)}</td>
+          <td><button class="btn btn-small btn-outline" onclick="deleteContent('${c.id}')">x</button></td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeFilter = tab.dataset.filter;
+        renderContent();
+      });
+    });
+
+    // Update attendees
+    async function updateAttendees(input) {
+      const id = input.dataset.id;
+      const val = parseInt(input.value) || 0;
+      await fetch(`${SB}/rest/v1/tour_events?id=eq.${id}`, {
+        method: 'PATCH', headers: { ...headers, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ actual_attendees: val })
+      });
+    }
+
+    // Add content
+    document.getElementById('add-content-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        city: document.getElementById('c-city').value,
+        category: document.getElementById('c-category').value,
+        platform: document.getElementById('c-platform').value,
+        description: document.getElementById('c-description').value || null,
+        content_url: document.getElementById('c-url').value || null,
+        views: parseInt(document.getElementById('c-views').value) || 0,
+        likes: parseInt(document.getElementById('c-likes').value) || 0,
+        comments: parseInt(document.getElementById('c-comments').value) || 0,
+        shares: parseInt(document.getElementById('c-shares').value) || 0,
+        saves: parseInt(document.getElementById('c-saves').value) || 0,
+        reach: parseInt(document.getElementById('c-reach').value) || 0,
+        posted_at: new Date().toISOString()
+      };
+      await fetch(`${SB}/rest/v1/tour_content`, {
+        method: 'POST', headers: { ...headers, 'Prefer': 'return=minimal' },
+        body: JSON.stringify(body)
+      });
+      e.target.reset();
+      loadDashboard();
+    });
+
+    // Delete content
+    async function deleteContent(id) {
+      if (!confirm('Delete this content entry?')) return;
+      await fetch(`${SB}/rest/v1/tour_content?id=eq.${id}`, {
+        method: 'DELETE', headers: { ...headers, 'Prefer': 'return=minimal' }
+      });
+      loadDashboard();
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
