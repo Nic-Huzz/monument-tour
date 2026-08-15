@@ -270,10 +270,12 @@
 
     async function query(table, params = '') {
       const res = await fetch(`${SB}/rest/v1/${table}?${params}`, { headers });
+      if (!res.ok) { console.error(`Failed to fetch ${table}:`, res.status); return []; }
       return res.json();
     }
 
     async function loadDashboard() {
+      try {
       const [signups, events, content] = await Promise.all([
         query('tour_signups', 'select=city,email'),
         query('tour_events', 'select=*&order=event_date.asc'),
@@ -323,6 +325,7 @@
       }).join('');
 
       renderContent();
+      } catch (err) { console.error('Dashboard load failed:', err); document.getElementById('total-signups').textContent = 'ERR'; }
     }
 
     function renderContent() {
@@ -378,16 +381,6 @@
       });
     });
 
-    // Update attendees
-    async function updateAttendees(input) {
-      const id = input.dataset.id;
-      const val = parseInt(input.value) || 0;
-      await fetch(`${SB}/rest/v1/tour_events?id=eq.${id}`, {
-        method: 'PATCH', headers: { ...headers, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ actual_attendees: val })
-      });
-    }
-
     // Add content
     document.getElementById('add-content-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -405,10 +398,11 @@
         reach: parseInt(document.getElementById('c-reach').value) || 0,
         posted_at: new Date().toISOString()
       };
-      await fetch(`${SB}/rest/v1/tour_content`, {
+      const res = await fetch(`${SB}/rest/v1/tour_content`, {
         method: 'POST', headers: { ...headers, 'Prefer': 'return=minimal' },
         body: JSON.stringify(body)
       });
+      if (!res.ok) { alert('Failed to add content'); return; }
       e.target.reset();
       loadDashboard();
     });
@@ -416,9 +410,10 @@
     // Delete content
     async function deleteContent(id) {
       if (!confirm('Delete this content entry?')) return;
-      await fetch(`${SB}/rest/v1/tour_content?id=eq.${id}`, {
+      const res = await fetch(`${SB}/rest/v1/tour_content?id=eq.${id}`, {
         method: 'DELETE', headers: { ...headers, 'Prefer': 'return=minimal' }
       });
+      if (!res.ok) { alert('Failed to delete — check permissions'); return; }
       loadDashboard();
     }
 
