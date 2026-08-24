@@ -10,8 +10,9 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --gold: #FFD700; --gold-dim: #E6C200; --bg: #1a0a45; --surface: #2d0b78;
-      --surface-2: #250a65; --text: #F5F0E8; --text-muted: #b8a8e0; --border: #4a2aaa;
+      --gold: #FFD700; --gold-dim: #E6C200; --orange: #FF6B35;
+      --bg: #0a0a0a; --surface: #141414; --surface-2: #1a1a1a;
+      --text: #F5F0E8; --text-muted: #777; --border: #2a2a2a;
       --green: #4ade80; --red: #f87171; --blue: #60a5fa;
     }
     body {
@@ -49,8 +50,8 @@
       text-align: left; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
       color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border);
     }
-    td { padding: 12px; border-bottom: 1px solid rgba(74,42,170,0.3); }
-    tr:hover { background: rgba(74,42,170,0.15); }
+    td { padding: 12px; border-bottom: 1px solid var(--border); }
+    tr:hover { background: rgba(255,255,255,0.03); }
     .city-name { font-weight: 700; color: var(--text); }
     .monument { font-size: 12px; color: var(--text-muted); }
     .num { font-family: 'Anton', sans-serif; font-size: 20px; color: var(--gold); text-align: center; }
@@ -169,6 +170,7 @@
             <th>City</th>
             <th>Date</th>
             <th style="text-align:center">Signups</th>
+            <th style="text-align:center">Page Visits</th>
             <th style="text-align:center">Pre-Party</th>
             <th style="text-align:center">Monument</th>
             <th style="text-align:center">After Party</th>
@@ -211,44 +213,40 @@
       </table>
     </div>
 
-    <!-- Add content form -->
+
+    <!-- Learnings -->
     <div class="section">
-      <div class="section-title">Add Content</div>
-      <form id="add-content-form">
-        <div class="form-row">
-          <select id="c-city">
-            <option value="Berlin">Berlin</option>
-            <option value="Copenhagen">Copenhagen</option>
-            <option value="Amsterdam">Amsterdam</option>
-            <option value="Paris">Paris</option>
-            <option value="Barcelona">Barcelona</option>
-          </select>
-          <select id="c-category">
-            <option value="launch">Launch</option>
-            <option value="event">Event</option>
-            <option value="post-tour">Post-Tour</option>
-          </select>
-          <select id="c-platform">
-            <option value="Instagram">Instagram</option>
-            <option value="TikTok">TikTok</option>
-            <option value="YouTube">YouTube</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <input type="text" id="c-description" placeholder="Description (e.g. Reel — flash mob reaction)">
-          <input type="url" id="c-url" placeholder="Content URL (optional)">
-        </div>
-        <div class="form-row">
-          <input type="number" id="c-views" placeholder="Views" min="0">
-          <input type="number" id="c-likes" placeholder="Likes" min="0">
-          <input type="number" id="c-comments" placeholder="Comments" min="0">
-          <input type="number" id="c-shares" placeholder="Shares" min="0">
-          <input type="number" id="c-saves" placeholder="Saves" min="0">
-          <input type="number" id="c-reach" placeholder="Reach" min="0">
-        </div>
-        <button type="submit" class="btn">Add Content</button>
-      </form>
+      <div class="section-title">Learnings</div>
+      <table>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Key Learnings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="city-name">Berlin</td>
+            <td style="line-height:1.6;">Need a helper to hand out headsets so I can curate the dance energy.</td>
+          </tr>
+          <tr>
+            <td class="city-name">Copenhagen</td>
+            <td style="line-height:1.6;">Most proud I've been of an event. Thought we executed customer acquisition + event flow amazingly well.</td>
+          </tr>
+          <tr>
+            <td class="city-name">Amsterdam</td>
+            <td style="line-height:1.6;">Run the events later.</td>
+          </tr>
+          <tr>
+            <td class="city-name">Paris</td>
+            <td style="line-height:1.6;color:var(--text-muted);">Upcoming</td>
+          </tr>
+          <tr>
+            <td class="city-name">Barcelona</td>
+            <td style="line-height:1.6;color:var(--text-muted);">Upcoming</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -276,25 +274,32 @@
 
     async function loadDashboard() {
       try {
-      const [signups, events, content] = await Promise.all([
+      const [signups, events, content, pageVisits] = await Promise.all([
         query('tour_signups', 'select=city,email'),
         query('tour_events', 'select=*&order=event_date.asc'),
-        query('tour_content', 'select=*&order=created_at.desc')
+        query('tour_content', 'select=*&order=created_at.desc'),
+        query('tour_page_visits', 'select=city')
       ]);
+
+      // Count page visits per city (Berlin hardcoded — tracking added after event)
+      const visitsByCity = {};
+      pageVisits.forEach(v => {
+        const c = v.city;
+        if (c && c !== 'index' && c !== 'pink' && c !== 'v') {
+          visitsByCity[c] = (visitsByCity[c] || 0) + 1;
+        }
+      });
+      visitsByCity['berlin'] = 270; // Hardcoded from Vercel — Supabase tracking added after Berlin event
 
       allContent = content;
 
-      // Count signups per city
+      // Count signups per city (total submissions, not unique — people register for friends)
       const signupsByCity = {};
-      const uniqueEmails = new Set();
       signups.forEach(s => {
-        if (!uniqueEmails.has(s.email)) {
-          signupsByCity[s.city] = (signupsByCity[s.city] || 0) + 1;
-          uniqueEmails.add(s.email);
-        }
+        signupsByCity[s.city] = (signupsByCity[s.city] || 0) + 1;
       });
 
-      const totalSignups = uniqueEmails.size;
+      const totalSignups = signups.length;
       const totalAttendees = events.reduce((sum, e) => sum + (e.actual_attendees || 0), 0);
       const eventsDone = events.filter(e => e.event_date <= today && e.actual_attendees > 0).length;
       const totalViews = content.reduce((sum, c) => sum + (c.views || 0), 0);
@@ -313,10 +318,12 @@
       eventsBody.innerHTML = events.map(e => {
         const past = e.event_date <= today;
         const sc = signupsByCity[e.city] || 0;
+        const pv = visitsByCity[e.city.toLowerCase()] || 0;
         return `<tr>
           <td><div class="city-name">${e.city}</div><div class="monument">${e.monument || ''}</div></td>
           <td>${new Date(e.event_date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</td>
           <td class="num">${sc}</td>
+          <td class="num-small">${fmt(pv)}</td>
           <td class="num-small">${e.pre_party_attendees || '—'}</td>
           <td class="num-small">${e.monument_attendees || '—'}</td>
           <td class="num-small">${e.post_party_attendees || '—'}</td>
@@ -363,9 +370,9 @@
           <td>${c.platform}</td>
           <td>${desc}</td>
           <td class="num-small">${fmt(c.views)}</td>
-          <td class="num-small">${fmt(c.likes)}</td>
-          <td class="num-small">${fmt(c.comments)}</td>
-          <td class="num-small">${fmt(c.reach)}</td>
+          <td class="num-small">${c.likes == null ? '<span style="color:var(--text-muted);font-size:10px;">TBC</span>' : fmt(c.likes)}</td>
+          <td class="num-small">${c.comments == null ? '<span style="color:var(--text-muted);font-size:10px;">TBC</span>' : fmt(c.comments)}</td>
+          <td class="num-small">${c.reach == null ? '<span style="color:var(--text-muted);font-size:10px;">TBC</span>' : fmt(c.reach)}</td>
           <td><button class="btn btn-small btn-outline" onclick="deleteContent('${c.id}')">x</button></td>
         </tr>`;
       }).join('');
@@ -379,32 +386,6 @@
         activeFilter = tab.dataset.filter;
         renderContent();
       });
-    });
-
-    // Add content
-    document.getElementById('add-content-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const body = {
-        city: document.getElementById('c-city').value,
-        category: document.getElementById('c-category').value,
-        platform: document.getElementById('c-platform').value,
-        description: document.getElementById('c-description').value || null,
-        content_url: document.getElementById('c-url').value || null,
-        views: parseInt(document.getElementById('c-views').value) || 0,
-        likes: parseInt(document.getElementById('c-likes').value) || 0,
-        comments: parseInt(document.getElementById('c-comments').value) || 0,
-        shares: parseInt(document.getElementById('c-shares').value) || 0,
-        saves: parseInt(document.getElementById('c-saves').value) || 0,
-        reach: parseInt(document.getElementById('c-reach').value) || 0,
-        posted_at: new Date().toISOString()
-      };
-      const res = await fetch(`${SB}/rest/v1/tour_content`, {
-        method: 'POST', headers: { ...headers, 'Prefer': 'return=minimal' },
-        body: JSON.stringify(body)
-      });
-      if (!res.ok) { alert('Failed to add content'); return; }
-      e.target.reset();
-      loadDashboard();
     });
 
     // Delete content
