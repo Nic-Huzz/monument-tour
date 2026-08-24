@@ -198,8 +198,8 @@
       <table class="content-table" style="margin-top:16px;">
         <thead>
           <tr>
-            <th>City</th>
             <th>Category</th>
+            <th>Publisher</th>
             <th>Platform</th>
             <th>Description</th>
             <th style="text-align:center">Views</th>
@@ -361,12 +361,16 @@
       }
       tbody.innerHTML = filtered.map(c => {
         const badgeClass = c.category === 'launch' ? 'badge-launch' : c.category === 'event' ? 'badge-event' : 'badge-post-tour';
+        const descText = c.description || '—';
+        const pubMatch = descText.match(/@(\w+)/);
+        const publisher = pubMatch ? '@' + pubMatch[1] : '—';
+        const cleanDesc = descText.replace(/\s*\(@\w+\)\s*/, ' ').replace(/^Reel\s*—\s*/, '').trim();
         const desc = c.content_url
-          ? `<a href="${c.content_url}" target="_blank" style="color:var(--gold);text-decoration:underline;">${c.description || 'Link'}</a>`
-          : (c.description || '—');
+          ? `<a href="${c.content_url}" target="_blank" style="color:var(--gold);text-decoration:underline;">${cleanDesc}</a>`
+          : cleanDesc;
         return `<tr>
-          <td class="city-name">${c.city}</td>
           <td><span class="badge ${badgeClass}">${c.category}</span></td>
+          <td style="color:var(--gold);font-weight:600;font-size:12px;">${publisher}</td>
           <td>${c.platform}</td>
           <td>${desc}</td>
           <td class="num-small">${fmt(c.views)}</td>
