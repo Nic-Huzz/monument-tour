@@ -264,8 +264,14 @@
         .story-dots { display:flex; justify-content:center; gap:6px; margin-top:12px; }
         .story-dots .dot { width:8px; height:8px; border-radius:50%; background:var(--border); transition:background 0.2s; }
         .story-dots .dot.active { background:var(--gold); }
+        .story-arrow { position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; background:rgba(0,0,0,0.3); border:none; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:5; backdrop-filter:blur(4px); transition:background 0.2s; }
+        .story-arrow:hover { background:rgba(0,0,0,0.5); }
+        .story-arrow.left { left:8px; }
+        .story-arrow.right { right:8px; }
       </style>
       <div class="story-carousel">
+        <button class="story-arrow left" onclick="document.getElementById('story-track').scrollBy({left:-document.getElementById('story-track').offsetWidth,behavior:'smooth'})">&#8249;</button>
+        <button class="story-arrow right" onclick="document.getElementById('story-track').scrollBy({left:document.getElementById('story-track').offsetWidth,behavior:'smooth'})">&#8250;</button>
         <div class="story-track" id="story-track">
           <!-- SLIDE 1: The Belief -->
           <div class="story-slide" style="background:linear-gradient(160deg,#e97aad 0%,#c96dd8 50%,#a855c7 100%);">
@@ -274,8 +280,8 @@
               <div class="slide-num">01</div>
             </div>
             <div class="slide-body">
-              <h3>We believe dancing is the most fun thing in the world.</h3>
-              <div class="slide-italic">That it can create a special euphoria where you feel fully alive.</div>
+              <div class="slide-italic">We believe dancing is the most fun thing in the world.</div>
+              <h3>That it can create a special euphoria where you feel fully alive.</h3>
               <div class="slide-text">So three years ago we quit our jobs and started hosting sunset silent discos in Thailand, living off the donations. Over the next few years we grew the events to become one of Bali's best Wellness Festivals.</div>
               <div class="slide-photos">
                 <div><img src="huzz.jpg" alt="Nic Huzz"></div>
@@ -330,12 +336,13 @@
       })();
       </script>
 
-      <!-- SOCIALS -->
+      <!-- SOCIALS — ELFSIGHT -->
       <div class="socials">
         <div class="socials-title">Follow us</div>
-        <div class="socials-row">
-          <a href="https://instagram.com/_huzz" target="_blank" class="social-pill">@_huzz</a>
-          <a href="https://instagram.com/spiffnuggs" target="_blank" class="social-pill">@spiffnuggs</a>
+        <script src="https://elfsightcdn.com/platform.js" async></script>
+        <div class="elfsight-app-b5968440-a6b0-4daf-b41e-4ab1db02481e" data-elfsight-app-lazy></div>
+        <div class="elfsight-app-9642813c-39a1-4052-a132-9a86ce7ab9ee" data-elfsight-app-lazy></div>
+        <div class="socials-row" style="margin-top:12px;">
           <a href="https://instagram.com/staygenerator" target="_blank" class="social-pill">@staygenerator</a>
         </div>
       </div>
