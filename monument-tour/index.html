@@ -3,176 +3,288 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Monument Tour | Vibe Rise</title>
-  <meta name="description" content="Silent disco at Europe's most iconic monuments. At sunset across 5 cities this summer.">
-  <meta property="og:title" content="Monument Tour | Vibe Rise">
-  <meta property="og:description" content="Silent disco at Europe's most iconic monuments. At sunset across 5 cities this summer.">
+  <title>Monument Rave: Europe Tour | Vibe Rise</title>
+  <meta name="description" content="Free silent disco at Europe's most iconic monuments. 100 headsets. 5 cities. Summer 2026.">
+  <meta property="og:title" content="Monument Rave: Europe Tour | Vibe Rise">
+  <meta property="og:description" content="Raving at Europe's most iconic monuments with 100 headsets. Free. Every sunset.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --gold: #FFD700; --gold-dim: #E6C200; --bg: #3a0f98; --surface: #2d0b78;
-      --surface-2: #250a65; --text: #F5F0E8; --text-muted: #b8a8e0; --border: #4a2aaa;
+      --gold: #FFD700; --gold-dim: #E6C200; --orange: #FF6B35;
+      --bg: #0a0a0a; --surface: #141414; --surface-2: #1a1a1a;
+      --text: #F5F0E8; --text-muted: #777; --border: #2a2a2a;
     }
     html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body {
       font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; min-height: 100dvh;
-      background: #e8e4ef; color: var(--text); display: flex; justify-content: center;
+      background: var(--bg); color: var(--text); display: flex; justify-content: center;
       padding: 0; -webkit-font-smoothing: antialiased;
     }
-    .container {
-      width: 100%; max-width: 480px; padding: 0 16px 48px; display: flex; flex-direction: column;
-      align-items: center; background: var(--bg); border-radius: 16px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.15); margin: 12px auto;
+    .container { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; }
+
+    /* VIDEO HERO */
+    .video-hero { width: 100%; aspect-ratio: 9/16; position: relative; overflow: hidden; cursor: pointer; }
+    .video-hero video { width: 100%; height: 100%; object-fit: cover; }
+    .video-hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+      background: linear-gradient(transparent, var(--bg)); pointer-events: none;
     }
-    .brand { font-family: 'Anton', sans-serif; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); padding: 20px 0 24px; }
-    .hero { text-align: center; margin-bottom: 28px; width: 100%; }
-    .hero-line { display: block; line-height: 1.05; }
-    .hero .whisper { font-family: 'Inter', sans-serif; font-weight: 400; font-size: clamp(13px, 3.5vw, 15px); letter-spacing: 4px; text-transform: uppercase; opacity: 0.5; margin-bottom: 4px; }
-    .hero .shout { font-family: 'Anton', sans-serif; font-size: clamp(36px, 12vw, 48px); text-transform: uppercase; letter-spacing: -0.5px; }
-    .hero .golden { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(40px, 13vw, 52px); color: var(--gold); text-transform: uppercase; letter-spacing: -0.5px; }
-    .hero .fade { font-family: 'Anton', sans-serif; font-size: clamp(28px, 9vw, 36px); text-transform: uppercase; letter-spacing: 1px; opacity: 0.45; }
-    .accent-bar { width: 40px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-dim)); border-radius: 2px; margin: 16px auto 0; }
-    .video-section { width: 100%; margin-bottom: 28px; }
-    .video-wrapper { width: 100%; aspect-ratio: 9/16; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); position: relative; cursor: pointer; }
-    .video-wrapper video { width: 100%; height: 100%; object-fit: cover; border: none; }
-    .subtitle { font-size: 14px; color: var(--text-muted); text-align: center; line-height: 1.6; margin-bottom: 28px; padding: 0 8px; }
+    .video-hero .sound-hint {
+      position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.6);
+      border-radius: 20px; padding: 6px 14px; font-size: 11px; color: #fff;
+      letter-spacing: 1px; z-index: 2; backdrop-filter: blur(4px);
+    }
+    .hero-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 0 20px 32px; z-index: 2;
+    }
+    .hero-label {
+      display: inline-block; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 20px; padding: 5px 14px; font-size: 10px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+    }
+    .hero-title { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.95; }
+    .hero-title .line1 { font-size: clamp(48px, 16vw, 72px); color: var(--gold); display: block; letter-spacing: 1px; }
+    .hero-title .line2 {
+      font-size: clamp(36px, 11vw, 50px); display: block;
+      background: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6B35 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -1px;
+    }
+    .hero-title .line3 { font-size: clamp(18px, 5vw, 22px); color: var(--text); opacity: 0.5; display: block; letter-spacing: 1px; text-transform: none; margin-top: 4px; }
 
-    .city-list { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .content { padding: 0 20px; width: 100%; }
 
+    /* SOCIAL PROOF */
+    .proof { padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+    .proof-quote { font-size: 17px; font-weight: 600; font-style: italic; line-height: 1.5; color: var(--text); text-align: center; margin-bottom: 6px; }
+    .proof-attr { font-size: 11px; color: var(--text-muted); text-align: center; letter-spacing: 1px; }
+
+    /* STATS */
+    .stats {
+      display: flex; justify-content: space-around; padding: 20px 0; margin-bottom: 28px;
+      border: 1px solid var(--border); border-radius: 12px; background: var(--surface);
+    }
+    .stat-item { text-align: center; }
+    .stat-value { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+    .stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+
+    /* DESCRIPTION */
+    .desc { font-size: 15px; color: var(--text); text-align: center; line-height: 1.6; margin-bottom: 28px; font-weight: 500; }
+    .desc strong { color: var(--gold); }
+
+    /* PICK YOUR CITY */
+    .pick-title {
+      font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+    }
+    .city-list { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
     .city-card {
-      display: flex; align-items: center; gap: 16px; padding: 18px 20px;
+      display: flex; align-items: center; gap: 14px; padding: 16px 18px;
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-      text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.15s;
-      min-height: 48px;
+      text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.15s; min-height: 48px;
     }
     .city-card:hover { border-color: var(--gold); transform: translateY(-1px); }
-
-    .city-date {
-      font-family: 'Anton', sans-serif; font-size: 28px; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--gold); white-space: nowrap; min-width: 64px;
-      text-align: center; line-height: 1.2;
-    }
-    .city-date .month { display: block; font-size: 13px; opacity: 0.7; letter-spacing: 3px; }
-
-    .city-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
-
+    .city-card.completed { opacity: 0.6; }
+    .city-card.next { border-color: var(--orange); box-shadow: 0 0 20px rgba(255,107,53,0.25), 0 0 40px rgba(255,107,53,0.1); }
+    .city-date { font-family: 'Anton', sans-serif; font-size: 24px; color: var(--gold); min-width: 50px; text-align: center; line-height: 1.2; }
+    .city-date .month { display: block; font-size: 11px; opacity: 0.7; letter-spacing: 2px; }
+    .city-card.next .city-date { color: var(--orange); }
+    .city-div { width: 1px; height: 32px; background: var(--border); flex-shrink: 0; }
+    .city-card.next .city-div { background: var(--orange); }
     .city-info { flex: 1; }
-    .city-name { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; }
-    .city-monument { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
+    .city-name { font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
+    .city-card.next .city-name { color: var(--orange); }
+    .city-monument { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .city-status { font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
+    .city-card.next .city-status { color: var(--orange); }
     .city-arrow { color: var(--gold); font-size: 18px; flex-shrink: 0; opacity: 0.6; }
 
-    .social-section { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
-    .social-link {
-      display: flex; align-items: center; gap: 8px; padding: 14px 20px; background: var(--surface);
-      border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text);
-      font-size: 14px; font-weight: 500; transition: border-color 0.2s, transform 0.15s; min-height: 48px;
-    }
-    .social-link:hover { border-color: var(--gold); transform: translateY(-1px); }
-    .social-link svg { width: 18px; height: 18px; fill: var(--gold); }
-    .footer { font-size: 11px; color: var(--text-muted); opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; }
+    /* POWERED BY */
+    .powered { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 28px; font-weight: 600; letter-spacing: 0.5px; }
+    .powered a { color: var(--gold); text-decoration: none; }
+
+    /* SOCIALS */
+    .socials { margin-bottom: 24px; }
+    .socials-title { font-family: 'Anton', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-bottom: 12px; opacity: 0.5; }
+    .socials-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .social-pill { padding: 10px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; text-decoration: none; color: var(--gold); font-size: 13px; font-weight: 600; }
+
+    /* SPONSORS */
+    .sponsors { margin-bottom: 24px; width: 100%; }
+    .sponsors-title { font-family: 'Anton', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); text-align: center; margin-bottom: 12px; opacity: 0.5; }
+    .sponsor-link { display: block; padding: 14px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; margin-bottom: 10px; text-align: center; }
+
+    .events-link { display: block; width: 100%; padding: 14px; margin-bottom: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 13px; color: var(--text-muted); text-decoration: none; }
+    .events-link span { color: var(--gold); text-decoration: underline; }
+
+    .footer { font-size: 10px; color: #333; letter-spacing: 2px; text-transform: uppercase; text-align: center; padding-bottom: 24px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="brand">Vibe Rise</div>
 
-    <div class="hero">
-      <span class="hero-line whisper">Silent disco at</span>
-      <span class="hero-line shout">Europe's</span>
-      <span class="hero-line golden">Monuments</span>
-
-      <div class="accent-bar"></div>
-    </div>
-
-    <div class="video-section">
-      <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:8px;letter-spacing:1px;">Click for sound on</div>
-      <div class="video-wrapper" onclick="const v=this.querySelector('video');v.muted=!v.muted;this.previousElementSibling.style.display=v.muted?'block':'none';">
-        <video src="promo.mp4" autoplay muted loop playsinline></video>
-      </div>
-      <div style="display:flex;justify-content:center;gap:16px;margin-top:12px;font-size:14px;font-weight:500;">
-        <a href="https://instagram.com/_huzz" target="_blank" style="color:var(--gold);text-decoration:none;">@_huzz</a>
-        <a href="https://instagram.com/spiffnuggs" target="_blank" style="color:var(--gold);text-decoration:none;">@spiffnuggs</a>
+    <!-- VIDEO HERO -->
+    <div class="video-hero" onclick="const v=this.querySelector('video');v.muted=!v.muted;this.querySelector('.sound-hint').style.display=v.muted?'block':'none';">
+      <div class="sound-hint">Tap for sound</div>
+      <video src="promo.mp4" autoplay muted loop playsinline></video>
+      <div class="hero-overlay">
+        <div class="hero-label">5 Cities · Summer 2026 · Free</div>
+        <div class="hero-title">
+          <span class="line1">Monument Rave:</span>
+          <span class="line2">Europe Tour</span>
+          <span class="line3">100 headsets. Throwback Tracks. Free.</span>
+        </div>
       </div>
     </div>
 
-    <p class="subtitle">We're doing something that's never been done before. We have 100 headsets and we're going to dance at these iconic monuments:</p>
+    <div class="content">
 
-    <div style="font-family:'Anton',sans-serif;font-size:clamp(14px,4vw,16px);text-transform:uppercase;letter-spacing:3px;color:var(--gold);text-align:center;margin-bottom:16px;">Pick your city</div>
+      <!-- SOCIAL PROOF -->
+      <div class="proof">
+        <div class="proof-quote">"I've been to some awesome parties, but that was genuinely the best one I've ever been to"</div>
+        <div class="proof-attr">— Berlin attendee</div>
+        <div style="margin-top:16px;font-size:15px;font-weight:600;color:var(--text);text-align:center;line-height:1.5;font-style:italic;">"Such an epic life experience"</div>
+        <div class="proof-attr" style="margin-top:6px;">— Solo traveller, Berlin</div>
+      </div>
 
-    <div class="city-list">
-      <a href="berlin.html" class="city-card">
-        <div class="city-date"><span class="month">Aug</span>13</div>
-        <div class="city-divider"></div>
-        <div class="city-info">
-          <div class="city-name">Berlin</div>
-          <div class="city-monument">Brandenburg Gate</div>
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-value">5</div>
+          <div class="stat-label">Cities</div>
         </div>
-        <div class="city-arrow">&#8250;</div>
-      </a>
-
-      <a href="copenhagen.html" class="city-card">
-        <div class="city-date"><span class="month">Aug</span>19</div>
-        <div class="city-divider"></div>
-        <div class="city-info">
-          <div class="city-name">Copenhagen</div>
-          <div class="city-monument">The Little Mermaid</div>
+        <div class="stat-item">
+          <div class="stat-value">100</div>
+          <div class="stat-label">Headsets</div>
         </div>
-        <div class="city-arrow">&#8250;</div>
-      </a>
-
-      <a href="amsterdam.html" class="city-card">
-        <div class="city-date"><span class="month">Aug</span>23</div>
-        <div class="city-divider"></div>
-        <div class="city-info">
-          <div class="city-name">Amsterdam</div>
-          <div class="city-monument">Rijksmuseum</div>
+        <div class="stat-item">
+          <div class="stat-value">Free</div>
+          <div class="stat-label">Entry</div>
         </div>
-        <div class="city-arrow">&#8250;</div>
-      </a>
-
-      <a href="paris.html" class="city-card">
-        <div class="city-date"><span class="month">Aug</span>27</div>
-        <div class="city-divider"></div>
-        <div class="city-info">
-          <div class="city-name">Paris</div>
-          <div class="city-monument">Eiffel Tower</div>
+        <div class="stat-item">
+          <div class="stat-value">Sunset</div>
+          <div class="stat-label">Every time</div>
         </div>
-        <div class="city-arrow">&#8250;</div>
-      </a>
+      </div>
 
-      <a href="barcelona.html" class="city-card">
-        <div class="city-date"><span class="month">Sep</span>2</div>
-        <div class="city-divider"></div>
-        <div class="city-info">
-          <div class="city-name">Barcelona</div>
-          <div class="city-monument">Sagrada Familia</div>
+      <!-- DESCRIPTION -->
+      <p class="desc">We're doing something that's never been done before: <strong>Raving at all of Europe's most iconic monuments with 100 headsets.</strong></p>
+
+      <!-- PICK YOUR CITY -->
+      <div class="pick-title">Pick your city</div>
+
+      <div class="city-list">
+        <a href="/monument-tour/berlin.html" class="city-card completed">
+          <div class="city-date"><span class="month">AUG</span>13</div>
+          <div class="city-div"></div>
+          <div class="city-info">
+            <div class="city-name">Berlin ✓</div>
+            <div class="city-monument">Brandenburg Gate</div>
+            <div class="city-status">Completed</div>
+          </div>
+          <div class="city-arrow">&#8250;</div>
+        </a>
+
+        <a href="/monument-tour/copenhagen.html" class="city-card completed">
+          <div class="city-date"><span class="month">AUG</span>19</div>
+          <div class="city-div"></div>
+          <div class="city-info">
+            <div class="city-name">Copenhagen ✓</div>
+            <div class="city-monument">The Little Mermaid</div>
+            <div class="city-status">Completed</div>
+          </div>
+          <div class="city-arrow">&#8250;</div>
+        </a>
+
+        <a href="/monument-tour/amsterdam.html" class="city-card completed">
+          <div class="city-date"><span class="month">AUG</span>23</div>
+          <div class="city-div"></div>
+          <div class="city-info">
+            <div class="city-name">Amsterdam ✓</div>
+            <div class="city-monument">Royal Palace Amsterdam</div>
+            <div class="city-status">Completed — 123 Sign-Ups</div>
+          </div>
+          <div class="city-arrow">&#8250;</div>
+        </a>
+
+        <a href="/monument-tour/paris.html" class="city-card next">
+          <div class="city-date"><span class="month">AUG</span>27</div>
+          <div class="city-div"></div>
+          <div class="city-info">
+            <div class="city-name">Paris</div>
+            <div class="city-monument">Eiffel Tower</div>
+            <div class="city-status">Next Event — 123 signed up for Amsterdam, don't miss Paris</div>
+          </div>
+          <div class="city-arrow">&#8250;</div>
+        </a>
+
+        <a href="/monument-tour/barcelona.html" class="city-card">
+          <div class="city-date"><span class="month">SEP</span>2</div>
+          <div class="city-div"></div>
+          <div class="city-info">
+            <div class="city-name">Barcelona</div>
+            <div class="city-monument">Sagrada Familia</div>
+          </div>
+          <div class="city-arrow">&#8250;</div>
+        </a>
+      </div>
+
+      <!-- REACTION VIDEO -->
+      <div style="width:100%;margin-bottom:28px;">
+        <div style="font-family:'Anton',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:10px;">Reactions</div>
+        <div style="width:100%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);cursor:pointer;" onclick="const v=this.querySelector('video');v.muted=!v.muted;">
+          <video src="reaction.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>
         </div>
-        <div class="city-arrow">&#8250;</div>
-      </a>
+      </div>
+
+      <!-- POWERED BY -->
+      <div class="powered">Powered by the epic <a href="https://instagram.com/staygenerator" target="_blank">@StayGenerator</a> accommodation</div>
+
+      <!-- SOCIALS -->
+      <div class="socials">
+        <div class="socials-title">Follow us</div>
+        <div class="socials-row">
+          <a href="https://instagram.com/_huzz" target="_blank" class="social-pill">@_huzz</a>
+          <a href="https://instagram.com/spiffnuggs" target="_blank" class="social-pill">@spiffnuggs</a>
+          <a href="https://instagram.com/staygenerator" target="_blank" class="social-pill">@staygenerator</a>
+        </div>
+      </div>
+
+      <!-- SPONSORS -->
+      <div class="sponsors">
+        <div class="sponsors-title">Sponsored by</div>
+        <a href="https://www.amazon.com/All-1-Travel-Supplement-Digestion/dp/B09S1BNGZY?ref_=ast_sto_dp" target="_blank" class="sponsor-link">Co-Pilot Travel Supplement</a>
+        <a href="https://buysilentdiscoheadphones.com/" target="_blank" class="sponsor-link">BuySilentDiscoHeadphones.com</a>
+      </div>
+
+      <!-- EVENTS LINK -->
+      <a href="https://events.nichuzz.com" target="_blank" class="events-link">Full event details + FAQ at <span>events.nichuzz.com</span></a>
+
+      <div class="footer">Vibe Rise × Generator</div>
     </div>
-
-    <div class="social-section">
-      <a href="https://instagram.com/_huzz" target="_blank" class="social-link">
-        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        @_huzz
-      </a>
-      <a href="https://instagram.com/spiffnuggs" target="_blank" class="social-link">
-        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        @spiffnuggs
-      </a>
-    </div>
-
-    <a href="https://events.nichuzz.com" target="_blank" style="display:block;width:100%;padding:14px;margin-bottom:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-align:center;font-size:13px;color:var(--text-muted);text-decoration:none;min-height:48px;">Full event details + FAQ at <span style="color:var(--gold);text-decoration:underline;">events.nichuzz.com</span></a>
-
-    <div class="footer">Vibe Rise</div>
   </div>
 
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
+  <script>
+  (function(){
+    var ref = new URLSearchParams(window.location.search).get("ref");
+    var page = window.location.pathname;
+    fetch("https://qlwfcfypnoptsocdpxuv.supabase.co/rest/v1/tour_page_visits", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsd2ZjZnlwbm9wdHNvY2RweHV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODY2NzUsImV4cCI6MjA3Mjc2MjY3NX0.fZLwb_VC2o8Sn3kp5H0_eJmhC8Hu8VtSHa2fpuqGNbY",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsd2ZjZnlwbm9wdHNvY2RweHV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODY2NzUsImV4cCI6MjA3Mjc2MjY3NX0.fZLwb_VC2o8Sn3kp5H0_eJmhC8Hu8VtSHa2fpuqGNbY",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ page: page, ref: ref || "direct", city: "index", user_agent: navigator.userAgent })
+    }).catch(function(){});
+  })();
+  </script>
 </body>
 </html>
