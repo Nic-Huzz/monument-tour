@@ -346,35 +346,110 @@
         Got questions? <span>WhatsApp us</span>
       </a>
 
-      <!-- WHO WE ARE -->
-      <div style="margin-bottom:28px;">
-        <div style="font-family:'Anton',sans-serif;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Who We Are</div>
-        <div style="display:flex;gap:12px;margin-bottom:20px;">
-          <div style="flex:1;aspect-ratio:3/4;border-radius:12px;overflow:hidden;border:1px solid var(--border);">
-            <img src="huzz.jpg" alt="Nic Huzz" style="width:100%;height:100%;object-fit:cover;">
+      <!-- WHO WE ARE — CAROUSEL -->
+      <style>
+        .story-carousel { width:100%; margin-bottom:28px; position:relative; }
+        .story-track { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; gap:0; scrollbar-width:none; border-radius:16px; }
+        .story-track::-webkit-scrollbar { display:none; }
+        .story-slide { min-width:100%; scroll-snap-align:start; aspect-ratio:4/5; padding:32px 28px; display:flex; flex-direction:column; justify-content:space-between; position:relative; }
+        .story-slide .slide-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:auto; }
+        .slide-label { font-family:'Anton',sans-serif; font-size:15px; letter-spacing:4px; text-transform:uppercase; color:#0a0a0a; line-height:1; }
+        .slide-num { font-family:'Anton',sans-serif; font-size:13px; color:rgba(0,0,0,0.35); letter-spacing:2px; }
+        .slide-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px 0; }
+        .slide-body h3 { font-family:'Anton',sans-serif; font-size:clamp(28px,8vw,38px); line-height:1.05; color:#0a0a0a; text-transform:none; letter-spacing:-0.5px; margin-bottom:16px; }
+        .slide-body .slide-italic { font-size:clamp(15px,4vw,18px); font-style:italic; color:rgba(0,0,0,0.7); line-height:1.5; margin-bottom:14px; }
+        .slide-body .slide-bold { font-family:'Anton',sans-serif; font-size:clamp(18px,5vw,22px); color:#0a0a0a; line-height:1.3; }
+        .slide-body .slide-text { font-size:clamp(14px,3.5vw,16px); color:rgba(0,0,0,0.7); line-height:1.6; margin-bottom:12px; }
+        .slide-body a { color:#0a0a0a; text-decoration:underline; }
+        .slide-photos { display:flex; gap:10px; margin-bottom:16px; }
+        .slide-photos div { flex:1; aspect-ratio:3/4; border-radius:10px; overflow:hidden; }
+        .slide-photos img { width:100%; height:100%; object-fit:cover; }
+        .slide-footer { border-top:1px solid rgba(0,0,0,0.1); padding-top:16px; display:flex; align-items:center; justify-content:flex-end; gap:16px; }
+        .slide-footer span { font-family:'Anton',sans-serif; font-size:16px; color:#0a0a0a; letter-spacing:0.5px; }
+        .story-dots { display:flex; justify-content:center; gap:6px; margin-top:12px; }
+        .story-dots .dot { width:8px; height:8px; border-radius:50%; background:var(--border); transition:background 0.2s; }
+        .story-dots .dot.active { background:var(--gold); }
+        .story-arrow { position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; background:rgba(0,0,0,0.3); border:none; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:5; backdrop-filter:blur(4px); transition:background 0.2s; }
+        .story-arrow:hover { background:rgba(0,0,0,0.5); }
+        .story-arrow.left { left:8px; }
+        .story-arrow.right { right:8px; }
+      </style>
+      <div class="story-carousel">
+        <button class="story-arrow left" onclick="document.getElementById('story-track').scrollBy({left:-document.getElementById('story-track').offsetWidth,behavior:'smooth'})">&#8249;</button>
+        <button class="story-arrow right" onclick="document.getElementById('story-track').scrollBy({left:document.getElementById('story-track').offsetWidth,behavior:'smooth'})">&#8250;</button>
+        <div class="story-track" id="story-track">
+          <!-- SLIDE 1: The Belief -->
+          <div class="story-slide" style="background:linear-gradient(160deg,#e97aad 0%,#c96dd8 50%,#a855c7 100%);">
+            <div class="slide-header">
+              <div class="slide-label">Who We Are</div>
+              <div class="slide-num">01</div>
+            </div>
+            <div class="slide-body">
+              <div class="slide-italic">We believe dancing is the most fun thing in the world.</div>
+              <div class="slide-italic" style="font-weight:700;color:#0a0a0a;">That it can create a special euphoria where you feel fully alive.</div>
+              <div class="slide-text">So three years ago I quit my job and we started hosting sunset silent discos in Thailand, living off the donations.</div>
+              <div class="slide-text">Over the next few years we grew the events to become one of Bali's best Wellness Festivals.</div>
+              <div class="slide-photos">
+                <div><img src="huzz.jpg" alt="Nic Huzz"></div>
+                <div><img src="spiff.jpg" alt="Sydney Spiff"></div>
+              </div>
+            </div>
           </div>
-          <div style="flex:1;aspect-ratio:3/4;border-radius:12px;overflow:hidden;border:1px solid var(--border);">
-            <img src="spiff.jpg" alt="Sydney Spiff" style="width:100%;height:100%;object-fit:cover;">
+          <!-- SLIDE 2: The Question -->
+          <div class="story-slide" style="background:linear-gradient(160deg,#c96dd8 0%,#b35dd4 50%,#9645c0 100%);">
+            <div class="slide-header">
+              <div class="slide-label">The Question</div>
+              <div class="slide-num">02</div>
+            </div>
+            <div class="slide-body">
+              <h3>Then we asked ourselves:</h3>
+              <div class="slide-italic">What would be the craziest way to share this euphoria with others?</div>
+            </div>
+          </div>
+          <!-- SLIDE 3: Our Answer -->
+          <div class="story-slide" style="background:linear-gradient(160deg,#e97aad 0%,#d96aaa 40%,#c96dd8 100%);">
+            <div class="slide-header">
+              <div class="slide-label">Our Answer</div>
+              <div class="slide-num">03</div>
+            </div>
+            <div class="slide-body">
+              <h3>Our answer:<br>Monument Raves.</h3>
+              <div class="slide-italic">Hosting raves in front of the most iconic landmarks in Europe.</div>
+              <div class="slide-text">So we ordered 100 headsets to Europe and partnered with <a href="https://instagram.com/staygenerator" target="_blank">@staygenerator</a> to bring this crazy ambition to life.</div>
+              <div class="slide-bold">We're absolutely pumped to share this dancing euphoria with you.</div>
+            </div>
+            <div class="slide-footer">
+              <span>Huzz</span>
+              <span style="opacity:0.3;">|</span>
+              <span>Generator</span>
+            </div>
           </div>
         </div>
-        <div style="font-size:14px;color:var(--text);line-height:1.7;">
-          <p style="margin-bottom:12px;">We believe dancing is the most fun thing in the world. That it can create a special euphoria where you feel fully alive.</p>
-          <p style="margin-bottom:12px;">So three years ago we quit our jobs and started hosting sunset silent discos in Thailand, living off the donations. Over the next few years we grew the events to become one of Bali's best Wellness Festivals.</p>
-          <p style="margin-bottom:12px;">Then we asked ourselves: what would be the craziest way to share this euphoria with others?</p>
-          <p style="margin-bottom:12px;">Our answer: <span style="color:var(--gold);font-weight:700;">Monument Raves.</span> Hosting raves in front of the most iconic landmarks in Europe.</p>
-          <p style="margin-bottom:12px;">So we ordered 100 headsets to Europe and partnered with <a href="https://instagram.com/staygenerator" target="_blank" style="color:var(--gold);text-decoration:underline;">@staygenerator</a> to bring this crazy ambition to life.</p>
-          <p style="margin-bottom:0;">We're absolutely pumped to share this dancing euphoria with you.</p>
+        <div class="story-dots" id="story-dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
         </div>
       </div>
+      <script>
+      (function(){
+        const track=document.getElementById('story-track');
+        const dots=document.querySelectorAll('#story-dots .dot');
+        track.addEventListener('scroll',()=>{
+          const i=Math.round(track.scrollLeft/track.offsetWidth);
+          dots.forEach((d,j)=>d.classList.toggle('active',j===i));
+        });
+      })();
+      </script>
 
-      <!-- SOCIALS -->
+      <!-- SOCIALS — ELFSIGHT -->
       <div class="socials">
         <div class="socials-title">Follow us</div>
-        <div class="socials-row">
-          <a href="https://instagram.com/_huzz" target="_blank" class="social-pill">@_huzz</a>
-          <a href="https://instagram.com/spiffnuggs" target="_blank" class="social-pill">@spiffnuggs</a>
-          <a href="https://instagram.com/staygenerator" target="_blank" class="social-pill">@staygenerator</a>
-        </div>
+        <style>[class*="elfsight-app-"] { border-radius:16px; overflow:hidden; margin-bottom:12px; }</style>
+        <script src="https://elfsightcdn.com/platform.js" async></script>
+        <div class="elfsight-app-b5968440-a6b0-4daf-b41e-4ab1db02481e" data-elfsight-app-lazy></div>
+        <div class="elfsight-app-5f611d42-7601-4235-bcc2-9942eaa3b0a3" data-elfsight-app-lazy></div>
+        <div class="elfsight-app-8e8cfdf1-fbcf-48c6-991f-280c404f9b2d" data-elfsight-app-lazy></div>
       </div>
 
       <!-- OTHER CITIES -->
