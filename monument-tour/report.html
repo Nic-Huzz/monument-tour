@@ -274,15 +274,29 @@
         query('tour_signups', 'select=city,email'),
         query('tour_events', 'select=*&order=event_date.asc'),
         query('tour_content', 'select=*&order=created_at.desc'),
-        query('tour_page_visits', 'select=city')
+        query('tour_page_visits', 'select=city,created_at')
       ]);
 
-      // Count page visits per city (Berlin hardcoded — tracking added after event)
+      // Event dates for capping page visits
+      const eventDates = {};
+      events.forEach(e => { eventDates[e.city.toLowerCase()] = e.event_date; });
+
+      // Count page visits per city, only up to and including event day (or all if upcoming)
       const visitsByCity = {};
       pageVisits.forEach(v => {
         const c = v.city;
         if (c && c !== 'index' && c !== 'pink' && c !== 'v') {
-          visitsByCity[c] = (visitsByCity[c] || 0) + 1;
+          const eventDate = eventDates[c];
+          if (eventDate && eventDate <= today) {
+            // Past event — only count visits up to end of event day
+            const visitDay = v.created_at ? v.created_at.split('T')[0] : '';
+            if (visitDay <= eventDate) {
+              visitsByCity[c] = (visitsByCity[c] || 0) + 1;
+            }
+          } else {
+            // Upcoming — count all visits
+            visitsByCity[c] = (visitsByCity[c] || 0) + 1;
+          }
         }
       });
       visitsByCity['berlin'] = 270; // Hardcoded from Vercel — Supabase tracking added after Berlin event
