@@ -263,7 +263,8 @@
     }
 
     async function query(table, params = '') {
-      const res = await fetch(`${SB}/rest/v1/${table}?${params}`, { headers });
+      const h = { ...headers, 'Range': '0-9999' };
+      const res = await fetch(`${SB}/rest/v1/${table}?${params}`, { headers: h });
       if (!res.ok) { console.error(`Failed to fetch ${table}:`, res.status); return []; }
       return res.json();
     }
@@ -274,7 +275,7 @@
         query('tour_signups', 'select=city,email'),
         query('tour_events', 'select=*&order=event_date.asc'),
         query('tour_content', 'select=*&order=created_at.desc'),
-        query('tour_page_visits', 'select=city,created_at')
+        query('tour_page_visits', 'select=city,created_at&limit=10000')
       ]);
 
       // Event dates for capping page visits
