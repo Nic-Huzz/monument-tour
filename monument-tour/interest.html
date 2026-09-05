@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Monument Rave 2027 — Where Next? | Vibe Rise</title>
+  <meta name="description" content="We're planning the next Monument Rave tour. Tell us which city you want us to rave at next.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #FFD700; --gold-dim: #E6C200; --orange: #FF6B35;
+      --bg: #0a0a0a; --surface: #141414; --surface-2: #1a1a1a;
+      --text: #F5F0E8; --text-muted: #777; --border: #2a2a2a;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh;
+      background: var(--bg); color: var(--text); display: flex; justify-content: center;
+      padding: 0; -webkit-font-smoothing: antialiased;
+    }
+    .container { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; }
+
+    .badge {
+      display: inline-block; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 20px; padding: 5px 14px; font-size: 10px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 24px;
+    }
+    h1 {
+      font-family: 'Anton', sans-serif; font-size: clamp(32px, 10vw, 48px); text-transform: uppercase;
+      text-align: center; line-height: 1.05; color: var(--text); margin-bottom: 8px; letter-spacing: 1px;
+    }
+    h1 span { color: var(--orange); }
+    .subtitle {
+      font-size: 16px; color: var(--text-muted); text-align: center; line-height: 1.6;
+      margin-bottom: 32px; max-width: 360px;
+    }
+    .subtitle strong { color: var(--text); }
+
+    .stats {
+      display: flex; justify-content: space-around; width: 100%; padding: 16px 0; margin-bottom: 32px;
+      border: 1px solid var(--border); border-radius: 12px; background: var(--surface);
+    }
+    .stat-item { text-align: center; }
+    .stat-value { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 1px; }
+    .stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+
+    .form-card {
+      width: 100%; background: var(--surface); border: 2px solid var(--gold); border-radius: 16px;
+      padding: 28px 20px; position: relative; overflow: hidden;
+    }
+    .form-title {
+      font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--gold); text-align: center; margin-bottom: 6px;
+    }
+    .form-sub {
+      font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 20px;
+    }
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: block; font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;
+    }
+    .field input, .field select {
+      width: 100%; padding: 14px 16px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px;
+      outline: none; -webkit-appearance: none; appearance: none;
+    }
+    .field input::placeholder { color: #555; }
+    .field input:focus, .field select:focus { border-color: var(--gold); }
+    .field select { color: var(--text); cursor: pointer; }
+    .btn-cta {
+      width: 100%; padding: 18px; margin-top: 8px;
+      background: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6B35 100%);
+      color: #0a0a0a; font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: 3px;
+      text-transform: uppercase; border: none; border-radius: 10px; cursor: pointer;
+      font-weight: 400; transition: transform 0.15s;
+    }
+    .btn-cta:hover { transform: scale(1.02); }
+    .btn-cta:active { transform: scale(0.98); }
+    .btn-cta:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .form-micro { font-size: 11px; color: #555; text-align: center; margin-top: 10px; }
+    .form-success { display: none; text-align: center; padding: 20px 0; }
+    .form-success p { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; color: var(--gold); }
+    .form-success .sub { font-family: 'Inter', sans-serif; font-size: 13px; text-transform: none; color: var(--text-muted); margin-top: 6px; }
+
+    .footer { font-size: 10px; color: #333; letter-spacing: 2px; text-transform: uppercase; text-align: center; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">Tour Complete — What's Next?</div>
+    <h1>We're looking for our next <span>monuments</span></h1>
+    <p class="subtitle">We just raved at the Brandenburg Gate, the Eiffel Tower, and the Sagrada Familia. Now we're planning the next tour. <strong>Where do you recommend?</strong></p>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Cities Done</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">390+</div>
+        <div class="stat-label">Sign-Ups</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">2027</div>
+        <div class="stat-label">Next Tour</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-title">Register Your Interest</div>
+      <div class="form-sub">Tell us where you want Monument Rave next</div>
+      <form id="interest-form">
+        <div class="field">
+          <label>First Name</label>
+          <input type="text" id="field-name" placeholder="Your name" required>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="field-email" placeholder="you@email.com" required>
+        </div>
+        <div class="field">
+          <label>Which city should we rave at next?</label>
+          <input type="text" id="field-city" placeholder="e.g. Sydney, London, Tokyo, New York..." required>
+        </div>
+        <button type="submit" class="btn-cta" id="btn-submit">I Want Monument Rave In My City</button>
+      </form>
+      <div class="form-micro">We'll let you know when we announce the next tour.</div>
+      <div class="form-success" id="form-success">
+        <p>You're on the list!</p>
+        <p class="sub">We'll let you know when your city is confirmed.</p>
+      </div>
+    </div>
+
+    <div class="footer">Vibe Rise — Monument Rave</div>
+  </div>
+
+  <script>
+  (function(){
+    const SUPABASE_URL = 'https://qlwfcfypnoptsocdpxuv.supabase.co';
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsd2ZjZnlwbm9wdHNvY2RweHV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODY2NzUsImV4cCI6MjA3Mjc2MjY3NX0.fZLwb_VC2o8Sn3kp5H0_eJmhC8Hu8VtSHa2fpuqGNbY';
+    const form = document.getElementById('interest-form');
+    const btn = document.getElementById('btn-submit');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'SAVING...';
+      const name = document.getElementById('field-name').value.trim();
+      const email = document.getElementById('field-email').value.trim();
+      const city = document.getElementById('field-city').value.trim();
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/tour_interest', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': ANON_KEY,
+            'Authorization': 'Bearer ' + ANON_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ name, email, city })
+        });
+        if (!res.ok) throw new Error('Failed');
+        form.style.display = 'none';
+        document.querySelector('.form-micro').style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "I WANT MONUMENT RAVE IN MY CITY";
+        alert('Something went wrong — try again?');
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
