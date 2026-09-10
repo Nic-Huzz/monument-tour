@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monument Tour Report | Vibe Rise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #FFD700; --gold-dim: #E6C200;
+      --bg: #0a0a0a; --surface: #141414; --surface-2: #1c1c1c;
+      --text: #F5F0E8; --text-muted: #888; --border: #2a2a2a;
+      --green: #4ade80; --rose: #e8465a;
+      --card-radius: 20px;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh;
+      background: var(--bg); color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Feed layout */
+    .feed {
+      max-width: 480px; margin: 0 auto; padding: 20px 0;
+    }
+
+    /* Header */
+    .feed-header {
+      text-align: center; margin-bottom: 28px; padding: 0 16px;
+    }
+    .feed-header h1 {
+      font-family: 'Anton', sans-serif; font-size: 26px; text-transform: uppercase;
+      letter-spacing: 3px; color: var(--gold);
+    }
+    .feed-header .tagline {
+      font-size: 12px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.5px;
+    }
+    .header-quote {
+      margin-top: 20px; font-size: 14px; padding: 0 12px;
+      color: var(--text-muted); font-style: italic; line-height: 1.5;
+    }
+    .header-quote span {
+      font-style: normal; font-size: 11px;
+    }
+
+    /* ── Horizontal swipe track ── */
+    .swipe-track {
+      display: flex; gap: 16px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 16px 20px;
+      scrollbar-width: none;
+    }
+    .swipe-track::-webkit-scrollbar { display: none; }
+
+    /* Dots indicator */
+    .dots {
+      display: flex; justify-content: center; gap: 6px; margin-bottom: 32px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border); transition: all 0.3s;
+    }
+    .dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
+
+    /* Hinge card — fixed width for swipe */
+    .card {
+      flex: 0 0 calc(100% - 32px); max-width: calc(100% - 32px);
+      scroll-snap-align: center;
+      background: var(--surface); border-radius: var(--card-radius);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+
+    /* Video section */
+    .card-video {
+      position: relative; width: 100%; aspect-ratio: 9/12; overflow: hidden;
+      background: #000;
+    }
+    .card-video video {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .card-video-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 40px 24px 20px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    }
+    .card-stop {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); opacity: 0.8; margin-bottom: 4px;
+    }
+    .card-city {
+      font-family: 'Anton', sans-serif; font-size: 48px; text-transform: uppercase;
+      letter-spacing: 4px; color: #fff; line-height: 1;
+    }
+    .card-monument {
+      font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 4px;
+    }
+    .card-date {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+      padding: 8px 14px; text-align: center;
+    }
+    .card-date-day {
+      font-family: 'Anton', sans-serif; font-size: 22px; color: #fff; line-height: 1;
+    }
+    .card-date-month {
+      font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* Hinge-style prompts */
+    .card-body { padding: 0; }
+    .prompt {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+    }
+    .prompt:last-child { border-bottom: none; }
+    .prompt-label {
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 8px;
+    }
+
+    /* Stats */
+    .stats-row {
+      display: flex; justify-content: space-around; text-align: center;
+    }
+    .stat-num {
+      font-family: 'Anton', sans-serif; font-size: 36px; color: var(--gold); line-height: 1;
+    }
+    .stat-sub {
+      font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 2px;
+    }
+
+    /* Quote prompt */
+    .prompt-quote {
+      font-size: 16px; font-style: italic; color: var(--text);
+      line-height: 1.5; font-weight: 400;
+    }
+
+    /* ── Section breaks ── */
+    .section-break {
+      text-align: center; padding: 32px 0 24px;
+    }
+    .section-break-title {
+      font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase;
+      letter-spacing: 3px; color: var(--gold);
+    }
+    .section-break-line {
+      width: 40px; height: 2px; background: var(--gold); margin: 8px auto 0;
+      opacity: 0.4;
+    }
+
+    /* ── Testimonial carousel ── */
+    .testimonial-track {
+      display: flex; gap: 16px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 16px 8px;
+      scrollbar-width: none;
+    }
+    .testimonial-track::-webkit-scrollbar { display: none; }
+
+    .testimonial-slide {
+      flex: 0 0 calc(100% - 32px); max-width: calc(100% - 32px);
+      scroll-snap-align: center;
+    }
+    .testimonial-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--card-radius); overflow: hidden;
+    }
+    .testimonial-card img {
+      width: 100%; display: block;
+    }
+    .testimonial-quote {
+      padding: 16px 20px;
+      font-size: 14px; font-style: italic; color: var(--text);
+      line-height: 1.5;
+    }
+    .testimonial-attr {
+      font-style: normal; font-size: 11px; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--gold); display: block;
+      margin-top: 8px;
+    }
+
+    .testimonial-dots {
+      display: flex; justify-content: center; gap: 6px;
+      margin-top: 16px; margin-bottom: 32px;
+    }
+    .t-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border); transition: all 0.3s;
+    }
+    .t-dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
+
+    /* ── Content stats ── */
+    .content-section { padding: 0 16px; }
+    .content-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin-bottom: 16px;
+    }
+    .content-stat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 8px; text-align: center;
+    }
+    .content-stat-num {
+      font-family: 'Anton', sans-serif; font-size: 28px; color: var(--gold); line-height: 1;
+    }
+    .content-stat-label {
+      font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 4px;
+    }
+    .content-table {
+      width: 100%; border-collapse: collapse; font-size: 12px;
+    }
+    .content-table th {
+      text-align: left; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted); padding: 8px 6px; border-bottom: 1px solid var(--border);
+    }
+    .content-table td {
+      padding: 10px 6px; border-bottom: 1px solid var(--border);
+    }
+    .content-table tr:hover { background: rgba(255,255,255,0.02); }
+    .badge {
+      display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px;
+      font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .badge-launch { background: rgba(96,165,250,0.15); color: #60a5fa; }
+    .badge-event { background: rgba(74,222,128,0.15); color: var(--green); }
+    .badge-post-tour { background: rgba(248,113,113,0.15); color: #f87171; }
+
+    /* Tabs */
+    .tabs {
+      display: flex; gap: 4px; margin-bottom: 12px; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 6px 14px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 11px; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    }
+    .tab.active { background: var(--gold); color: #080808; border-color: var(--gold); }
+
+    @media (max-width: 520px) {
+      .feed { padding: 12px 0; }
+      .card-city { font-size: 40px; }
+      .stat-num { font-size: 30px; }
+      .content-stat-num { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="feed">
+    <div class="feed-header">
+      <h1>Monument Rave</h1>
+      <div class="tagline">Europe Summer 2026 — Tour Report</div>
+      <div class="header-quote">"The feeling of being free and seen, without fear of others' judgment." <span>— Alfie, Copenhagen</span></div>
+    </div>
+
+    <!-- CITY CARDS — horizontal swipe -->
+    <div class="swipe-track" id="city-track">
+
+      <!-- PARIS -->
+      <div class="card" data-index="0">
+        <div class="card-video">
+          <video src="promo.mp4" playsinline muted loop></video>
+          <div class="card-date">
+            <div class="card-date-day">27</div>
+            <div class="card-date-month">Aug</div>
+          </div>
+          <div class="card-video-overlay">
+            <div class="card-stop">Stop 04</div>
+            <div class="card-city">Paris</div>
+            <div class="card-monument">Eiffel Tower</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="prompt">
+            <div class="prompt-label">The numbers</div>
+            <div class="stats-row">
+              <div class="stat-block"><div class="stat-num">83</div><div class="stat-sub">Signups</div></div>
+
+              <div class="stat-block"><div class="stat-num">80+</div><div class="stat-sub">Danced</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COPENHAGEN -->
+      <div class="card" data-index="1">
+        <div class="card-video">
+          <video src="copenhagen.mp4" playsinline muted loop></video>
+          <div class="card-date">
+            <div class="card-date-day">19</div>
+            <div class="card-date-month">Aug</div>
+          </div>
+          <div class="card-video-overlay">
+            <div class="card-stop">Stop 02</div>
+            <div class="card-city">Copenhagen</div>
+            <div class="card-monument">The Little Mermaid</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="prompt">
+            <div class="prompt-label">The numbers</div>
+            <div class="stats-row">
+              <div class="stat-block"><div class="stat-num">54</div><div class="stat-sub">Signups</div></div>
+
+              <div class="stat-block"><div class="stat-num">35</div><div class="stat-sub">Danced</div></div>
+            </div>
+          </div>
+          <div class="prompt">
+            <div class="prompt-label">Biggest learning</div>
+            <div class="prompt-quote">"Most proud I've been of an event. Executed customer acquisition + event flow amazingly well."</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BERLIN -->
+      <div class="card" data-index="2">
+        <div class="card-video">
+          <video src="berlin.mp4" playsinline muted loop></video>
+          <div class="card-date">
+            <div class="card-date-day">13</div>
+            <div class="card-date-month">Aug</div>
+          </div>
+          <div class="card-video-overlay">
+            <div class="card-stop">Stop 01</div>
+            <div class="card-city">Berlin</div>
+            <div class="card-monument">Brandenburg Gate</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="prompt">
+            <div class="prompt-label">The numbers</div>
+            <div class="stats-row">
+              <div class="stat-block"><div class="stat-num">32</div><div class="stat-sub">Signups</div></div>
+
+              <div class="stat-block"><div class="stat-num">75+</div><div class="stat-sub">Danced</div></div>
+            </div>
+          </div>
+          <div class="prompt">
+            <div class="prompt-label">Biggest learning</div>
+            <div class="prompt-quote">"Need a helper to hand out headsets so I can curate the dance energy."</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARCELONA -->
+      <div class="card" data-index="3">
+        <div class="card-video">
+          <video src="barcelona.mp4" playsinline muted loop></video>
+          <div class="card-date">
+            <div class="card-date-day">02</div>
+            <div class="card-date-month">Sep</div>
+          </div>
+          <div class="card-video-overlay">
+            <div class="card-stop">Stop 05</div>
+            <div class="card-city">Barcelona</div>
+            <div class="card-monument">Sagrada Familia</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="prompt">
+            <div class="prompt-label">The numbers</div>
+            <div class="stats-row">
+              <div class="stat-block"><div class="stat-num">97</div><div class="stat-sub">Signups</div></div>
+
+              <div class="stat-block"><div class="stat-num">50+</div><div class="stat-sub">Danced</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AMSTERDAM -->
+      <div class="card" data-index="4">
+        <div class="card-video">
+          <video src="amsterdam.mp4" playsinline muted loop></video>
+          <div class="card-date">
+            <div class="card-date-day">23</div>
+            <div class="card-date-month">Aug</div>
+          </div>
+          <div class="card-video-overlay">
+            <div class="card-stop">Stop 03</div>
+            <div class="card-city">Amsterdam</div>
+            <div class="card-monument">Rijksmuseum</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="prompt">
+            <div class="prompt-label">The numbers</div>
+            <div class="stats-row">
+              <div class="stat-block"><div class="stat-num">124</div><div class="stat-sub">Signups</div></div>
+
+              <div class="stat-block"><div class="stat-num">80+</div><div class="stat-sub">Danced</div></div>
+            </div>
+          </div>
+          <div class="prompt">
+            <div class="prompt-label">Biggest learning</div>
+            <div class="prompt-quote">"Run the events later."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dots" id="city-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="section-break">
+      <div class="section-break-title">What people said</div>
+      <div class="section-break-line"></div>
+    </div>
+
+    <div class="testimonial-track" id="testimonial-track">
+
+      <div class="testimonial-slide" data-index="0">
+        <div class="testimonial-card">
+          <video src="testimonials/video-testimonial.mp4" playsinline controls style="width:100%;display:block;"></video>
+        </div>
+      </div>
+
+      <div class="testimonial-slide" data-index="1">
+        <div class="testimonial-card">
+          <img src="testimonials/burak-berlin.png" alt="Burak — Berlin">
+        </div>
+        <div class="testimonial-quote">
+          "The best fun of this summer! You guys have pure happiness and you're going for your dreams."
+          <span class="testimonial-attr">Burak — Berlin</span>
+        </div>
+      </div>
+
+      <div class="testimonial-slide" data-index="2">
+        <div class="testimonial-card">
+          <img src="testimonials/alfie-copenhagen.png" alt="Alfie — Copenhagen">
+        </div>
+        <div class="testimonial-quote">
+          "The feeling of being free and seen, without fear of others' judgment."
+          <span class="testimonial-attr">Alfie — Copenhagen</span>
+        </div>
+      </div>
+
+      <div class="testimonial-slide" data-index="3">
+        <div class="testimonial-card">
+          <img src="testimonials/paris-whatsapp.png" alt="Paris attendee">
+        </div>
+        <div class="testimonial-quote">
+          "Dancing and singing while admiring the Eiffel Tower... I don't think I stopped smiling the entire time."
+          <span class="testimonial-attr">Anonymous — Paris</span>
+        </div>
+      </div>
+
+      <div class="testimonial-slide" data-index="4">
+        <div class="testimonial-card">
+          <img src="testimonials/kush-paris.jpg" alt="Kush — Paris">
+        </div>
+        <div class="testimonial-quote">
+          "Can't believe it was free, incredible energy. Absolutely loved asking us to imagine hugging a playful, joyful, younger version of ourselves."
+          <span class="testimonial-attr">Deepanshu Kush — Paris</span>
+        </div>
+      </div>
+
+      <div class="testimonial-slide" data-index="5">
+        <div class="testimonial-card">
+          <img src="testimonials/sebi-paris-1.png" alt="Sebi — Paris">
+        </div>
+        <div class="testimonial-quote">
+          "It was such a special experience. It was very special to listen to every of your words."
+          <span class="testimonial-attr">Sebi — Paris</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-dots" id="testimonial-dots">
+      <div class="t-dot active"></div>
+      <div class="t-dot"></div>
+      <div class="t-dot"></div>
+      <div class="t-dot"></div>
+      <div class="t-dot"></div>
+      <div class="t-dot"></div>
+    </div>
+
+    <!-- CONTENT DATA -->
+    <div class="section-break">
+      <div class="section-break-title">Content</div>
+      <div class="section-break-line"></div>
+    </div>
+
+    <div class="content-section">
+      <div class="content-grid" id="content-stats" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="content-stat"><div class="content-stat-num" id="c-pieces">—</div><div class="content-stat-label">Pieces</div></div>
+        <div class="content-stat"><div class="content-stat-num" id="c-views">—</div><div class="content-stat-label">Views</div></div>
+      </div>
+
+      <div class="tabs" id="content-tabs">
+        <div class="tab active" data-filter="all">All</div>
+        <div class="tab" data-filter="launch">Launch</div>
+        <div class="tab" data-filter="event">Event</div>
+        <div class="tab" data-filter="post-tour">Post-Tour</div>
+      </div>
+
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Publisher</th>
+            <th>Description</th>
+            <th style="text-align:right">Views</th>
+          </tr>
+        </thead>
+        <tbody id="content-table"></tbody>
+      </table>
+    </div>
+
+    <div style="height:40px;"></div>
+  </div>
+
+  <script>
+    // ── Supabase ──
+    const SB = 'https://qlwfcfypnoptsocdpxuv.supabase.co';
+    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsd2ZjZnlwbm9wdHNvY2RweHV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxODY2NzUsImV4cCI6MjA3Mjc2MjY3NX0.fZLwb_VC2o8Sn3kp5H0_eJmhC8Hu8VtSHa2fpuqGNbY';
+    const headers = { 'apikey': KEY, 'Authorization': `Bearer ${KEY}`, 'Content-Type': 'application/json' };
+
+    let allContent = [];
+    let activeFilter = 'all';
+
+    function fmt(n) {
+      if (n === null || n === undefined) return '0';
+      if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+      return n.toString();
+    }
+
+    async function query(table, params = '') {
+      const h = { ...headers, 'Range': '0-9999' };
+      const res = await fetch(`${SB}/rest/v1/${table}?${params}`, { headers: h });
+      if (!res.ok) return [];
+      return res.json();
+    }
+
+    async function loadContent() {
+      try {
+        const content = await query('tour_content', 'select=*&order=created_at.desc');
+        allContent = content;
+        renderContent();
+      } catch (err) { console.error('Content load failed:', err); }
+    }
+
+    function renderContent() {
+      const filtered = activeFilter === 'all' ? allContent : allContent.filter(c => c.category === activeFilter);
+
+      const totals = { views: 0, likes: 0, comments: 0, saves: 0, reach: 0 };
+      filtered.forEach(c => {
+        totals.views += c.views || 0;
+        totals.likes += c.likes || 0;
+        totals.comments += c.comments || 0;
+        totals.saves += c.saves || 0;
+        totals.reach += c.reach || 0;
+      });
+
+      document.getElementById('c-pieces').textContent = filtered.length;
+      document.getElementById('c-views').textContent = fmt(totals.views);
+
+      const tbody = document.getElementById('content-table');
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">No content yet</td></tr>';
+        return;
+      }
+      tbody.innerHTML = filtered.map(c => {
+        const badgeClass = c.category === 'launch' ? 'badge-launch' : c.category === 'event' ? 'badge-event' : 'badge-post-tour';
+        const descText = c.description || '—';
+        const pubMatch = descText.match(/@(\w+)/);
+        const publisher = pubMatch ? '@' + pubMatch[1] : '—';
+        const cleanDesc = descText.replace(/\s*\(@\w+\)\s*/, ' ').replace(/^Reel\s*—\s*/, '').trim();
+        const desc = c.content_url
+          ? `<a href="${c.content_url}" target="_blank" style="color:var(--gold);text-decoration:none;">${cleanDesc}</a>`
+          : cleanDesc;
+        return `<tr>
+          <td><span class="badge ${badgeClass}">${c.category}</span></td>
+          <td style="color:var(--gold);font-weight:600;font-size:11px;">${publisher}</td>
+          <td>${desc}</td>
+          <td style="text-align:right;font-weight:600;">${fmt(c.views)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Content tabs
+    document.querySelectorAll('#content-tabs .tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('#content-tabs .tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeFilter = tab.dataset.filter;
+        renderContent();
+      });
+    });
+
+    loadContent();
+
+    // ── Scroll-snap dot sync ──
+    function syncDots(trackEl, dotsEl, dotClass) {
+      const dots = dotsEl.querySelectorAll('.' + dotClass);
+      trackEl.addEventListener('scroll', () => {
+        const scrollLeft = trackEl.scrollLeft;
+        const cardWidth = trackEl.firstElementChild.offsetWidth + 16; // gap
+        const idx = Math.round(scrollLeft / cardWidth);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      });
+    }
+
+    syncDots(document.getElementById('city-track'), document.getElementById('city-dots'), 'dot');
+    syncDots(document.getElementById('testimonial-track'), document.getElementById('testimonial-dots'), 't-dot');
+
+    // ── Play videos when visible ──
+    const videos = document.querySelectorAll('.card-video video');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.play();
+        else entry.target.pause();
+      });
+    }, { threshold: 0.5 });
+    videos.forEach(v => observer.observe(v));
+  </script>
+</body>
+</html>
