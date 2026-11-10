@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Nic Huzz | Links</title>
-  <meta name="description" content="On a mission to make healing fun">
-  <meta property="og:title" content="Nic Huzz | Links">
-  <meta property="og:description" content="On a mission to make healing fun">
+  <title>Huzz | Links</title>
+  <meta name="description" content="The Rave Guide — Guided rave experiences at iconic locations">
+  <meta property="og:title" content="Huzz | Links">
+  <meta property="og:description" content="The Rave Guide — Guided rave experiences at iconic locations">
   <meta property="og:type" content="profile">
   <meta property="og:image" content="assets/profile.jpg">
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/jpeg" href="assets/profile.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -22,51 +22,87 @@
     }
 
     :root {
-      --bg-top: #c4b5f0;
-      --bg-mid: #6c3bf5;
-      --bg-bottom: #3a0f98;
-      --accent: #FFD700;
-      --name-color: #FFD700;
-      --bio-color: #ffffff;
-      --card-bg: #ffffff;
-      --card-text: #1a1a1a;
-      --card-radius: 12px;
-      --card-hover-scale: 1.03;
-      --section-title-color: #FFD700;
-      --social-icon-color: #FFD700;
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --bg: #09090F;
+      --surface: #111118;
+      --surface-2: #16161F;
+      --text: #F0ECF5;
+      --text-muted: #7a7488;
+      --text-secondary: #b0aab8;
+      --border: rgba(30, 30, 40, 1);
+      --border-hover: rgba(217, 70, 239, 0.3);
+      --pink: #D946EF;
+      --gold: #FFB800;
+      --gradient: linear-gradient(135deg, #D946EF 0%, #D946EF 65%, #E8A040 90%, #FFB800 100%);
+      --gradient-vertical: linear-gradient(to bottom, #D946EF 0%, #D946EF 70%, #FFB800 100%);
+      --shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+      --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.3);
+      --font-hero: 'Anton', sans-serif;
+      --font-heading: 'DM Serif Display', serif;
+      --font-body: 'Outfit', sans-serif;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+      /* Legacy vars used by applyTheme — defaults overridden by JS */
+      --accent: #D946EF;
+      --name-color: #D946EF;
+      --bio-color: #b0aab8;
+      --card-bg: transparent;
+      --card-text: #F0ECF5;
+      --card-radius: 16px;
+      --card-hover-scale: 1.0;
+      --section-title-color: #D946EF;
+      --social-icon-color: #b0aab8;
+      --font: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
     html {
       -webkit-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      font-family: var(--font);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
       min-height: 100vh;
       min-height: 100dvh;
-      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 35%, var(--bg-bottom) 100%);
-      background-attachment: fixed;
       display: flex;
       justify-content: center;
       padding: 0 16px 40px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      position: relative;
     }
+
+    /* Ambient blob background */
+    .page-blobs {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; filter: blur(80px);
+      opacity: 0.5;
+    }
+    .page-blobs div { position: absolute; border-radius: 50%; }
+    .blob-1 { width: 45vw; height: 45vw; top: -10%; left: -15%; background: rgba(217, 70, 239, 0.18); }
+    .blob-2 { width: 35vw; height: 35vw; top: 30%; right: -10%; background: rgba(255, 184, 0, 0.08); }
+    .blob-3 { width: 30vw; height: 30vw; bottom: 10%; left: 10%; background: rgba(217, 70, 239, 0.1); }
 
     .container {
       width: 100%;
-      max-width: 680px;
+      max-width: 480px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
     /* Profile Section */
     .profile {
       text-align: center;
-      padding-top: 20px;
-      margin-bottom: 28px;
+      padding-top: 40px;
+      margin-bottom: 32px;
       width: 100%;
     }
 
@@ -81,8 +117,8 @@
       width: 100%;
       height: auto;
       display: block;
-      filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.25));
-      animation: heroIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.4));
+      animation: heroIn 0.8s var(--ease-out) both;
     }
 
     .avatar-circle {
@@ -91,9 +127,9 @@
       margin: 0 auto 16px;
       border-radius: 50%;
       overflow: hidden;
-      border: 3px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      animation: avatarIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow-hover);
+      animation: avatarIn 0.7s var(--ease-out) both;
     }
 
     .avatar-circle img {
@@ -104,22 +140,26 @@
     }
 
     .profile-name {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--name-color);
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-      animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+      font-family: var(--font-hero);
+      font-size: 36px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+      animation: fadeSlideUp 0.6s var(--ease-out) 0.15s both;
     }
 
     .profile-bio {
-      font-size: 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
       font-weight: 400;
-      color: var(--bio-color);
-      opacity: 0.9;
+      color: var(--text-secondary);
       line-height: 1.5;
-      margin-bottom: 16px;
-      animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+      margin-bottom: 20px;
+      animation: fadeSlideUp 0.6s var(--ease-out) 0.25s both;
     }
 
     /* Social Icons */
@@ -128,7 +168,7 @@
       justify-content: center;
       gap: 12px;
       margin-bottom: 8px;
-      animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+      animation: fadeSlideUp 0.6s var(--ease-out) 0.35s both;
     }
 
     .social-icon {
@@ -138,16 +178,17 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      border: 2px solid var(--social-icon-color);
-      color: var(--social-icon-color);
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
       text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.35s var(--ease);
     }
 
     .social-icon:hover {
-      background: var(--social-icon-color);
-      color: var(--bg-mid);
-      transform: scale(1.12);
+      border-color: var(--pink);
+      color: var(--pink);
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(217, 70, 239, 0.15);
     }
 
     .social-icon svg {
@@ -163,33 +204,37 @@
 
     .section-title {
       text-align: center;
-      color: var(--section-title-color);
-      font-size: 18px;
-      font-weight: 700;
-      margin: 28px 0 14px;
-      letter-spacing: -0.01em;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin: 32px 0 14px;
     }
 
     .link-card {
       display: flex;
       align-items: center;
-      background: var(--card-bg);
-      border-radius: var(--card-radius);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 0;
       margin-bottom: 12px;
       text-decoration: none;
-      color: var(--card-text);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--text);
+      transition: all 0.35s var(--ease);
       cursor: pointer;
       overflow: hidden;
-      min-height: 56px;
+      min-height: 60px;
       position: relative;
+      box-shadow: var(--shadow);
     }
 
     .link-card:hover {
-      transform: scale(var(--card-hover-scale));
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-hover);
     }
 
     .link-card:active {
@@ -197,20 +242,21 @@
     }
 
     .link-thumb {
-      width: 56px;
-      height: 56px;
+      width: 60px;
+      height: 60px;
       object-fit: cover;
       flex-shrink: 0;
-      border-radius: var(--card-radius) 0 0 var(--card-radius);
+      border-radius: var(--radius) 0 0 var(--radius);
     }
 
     .link-title {
       flex: 1;
       text-align: center;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 500;
       padding: 14px 20px;
       line-height: 1.3;
+      color: var(--text);
     }
 
     .link-card.has-thumb .link-title {
@@ -220,36 +266,18 @@
 
     /* Animations */
     @keyframes heroIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9) translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      from { opacity: 0; transform: scale(0.9) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     @keyframes avatarIn {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @keyframes fadeSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .link-animate {
@@ -258,38 +286,37 @@
     }
 
     .link-animate.visible {
-      animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: fadeSlideUp 0.5s var(--ease-out) both;
     }
 
     /* Footer */
     .footer {
       margin-top: 40px;
       text-align: center;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 12px;
     }
 
-    /* Animated gradient */
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .footer-brand {
+      font-family: var(--font-hero);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    body.animated-bg {
-      background-size: 200% 200% !important;
-      animation: gradientShift 12s ease infinite;
+    .footer-sign-off {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
     /* Ripple effect */
-    .link-card {
-      overflow: hidden;
-    }
-
     .ripple-circle {
       position: absolute;
       border-radius: 50%;
-      background: rgba(108, 59, 245, 0.12);
+      background: rgba(217, 70, 239, 0.1);
       transform: scale(0);
       animation: rippleExpand 0.6s ease-out forwards;
       pointer-events: none;
@@ -299,10 +326,7 @@
     }
 
     @keyframes rippleExpand {
-      to {
-        transform: scale(15);
-        opacity: 0;
-      }
+      to { transform: scale(15); opacity: 0; }
     }
 
     /* Social + Share row */
@@ -311,40 +335,31 @@
       justify-content: center;
       align-items: center;
       gap: 12px;
-      animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+      animation: fadeSlideUp 0.6s var(--ease-out) 0.35s both;
     }
 
     /* Share button */
-    .share-row {
-      display: flex;
-      justify-content: center;
-      margin-top: 12px;
-      animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
-    }
-
     .share-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 10px 22px;
-      border-radius: 24px;
-      border: 2px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.8);
-      font-size: 14px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      font-family: var(--font);
+      transition: all 0.35s var(--ease);
+      font-family: var(--font-body);
+      letter-spacing: 0.04em;
     }
 
     .share-btn:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: rgba(255,255,255,0.35);
-      color: #fff;
-      transform: scale(1.05);
+      border-color: var(--pink);
+      color: var(--pink);
+      transform: translateY(-2px);
     }
 
     .share-btn:active {
@@ -362,15 +377,16 @@
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(80px);
-      background: rgba(0,0,0,0.8);
-      color: white;
+      background: var(--surface);
+      color: var(--text);
       padding: 10px 20px;
-      border-radius: 10px;
+      border-radius: 50px;
       font-size: 14px;
       font-weight: 500;
+      border: 1px solid var(--border);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.35s var(--ease-out);
       z-index: 100;
       pointer-events: none;
     }
@@ -383,7 +399,7 @@
     .preloader {
       position: fixed;
       inset: 0;
-      background: linear-gradient(180deg, var(--bg-top), var(--bg-mid));
+      background: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -399,8 +415,8 @@
     .preloader-spinner {
       width: 32px;
       height: 32px;
-      border: 3px solid rgba(255,255,255,0.12);
-      border-top-color: rgba(255,255,255,0.8);
+      border: 3px solid rgba(217, 70, 239, 0.15);
+      border-top-color: var(--pink);
       border-radius: 50%;
       animation: spin 0.65s linear infinite;
     }
@@ -416,14 +432,14 @@
     }
 
     .coming-soon-badge {
-      background: var(--accent);
-      color: #1a1a1a;
+      background: var(--gradient);
+      color: #0a0a0a;
       font-size: 9px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 5px 10px;
-      border-radius: 4px;
+      letter-spacing: 0.06em;
+      padding: 6px 12px;
+      border-radius: 50px;
       margin-right: 14px;
       flex-shrink: 0;
       line-height: 1.4;
@@ -434,10 +450,10 @@
     .interest-form {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                  padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      background: var(--card-bg);
-      border-radius: 0 0 var(--card-radius) var(--card-radius);
+      transition: max-height 0.4s var(--ease-out),
+                  padding 0.4s var(--ease-out);
+      background: var(--surface);
+      border-radius: 0 0 var(--radius) var(--radius);
       margin-top: -6px;
       margin-bottom: 12px;
       padding: 0 20px;
@@ -446,29 +462,35 @@
     .interest-form.open {
       max-height: 400px;
       padding: 16px 20px 20px;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
       border-top: none;
     }
 
     .interest-form input,
     .interest-form textarea {
       width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       font-size: 14px;
-      font-family: var(--font);
+      font-family: var(--font-body);
       margin-bottom: 8px;
-      color: #1a1a1a;
-      background: #fafafa;
-      transition: border-color 0.15s;
+      color: var(--text);
+      background: var(--surface-2);
+      transition: border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    }
+
+    .interest-form input::placeholder,
+    .interest-form textarea::placeholder {
+      color: var(--text-muted);
     }
 
     .interest-form input:focus,
     .interest-form textarea:focus {
       outline: none;
-      border-color: var(--accent);
-      background: #fff;
+      border-color: var(--pink);
+      background: var(--bg);
+      box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.1);
     }
 
     .interest-form textarea {
@@ -478,25 +500,27 @@
 
     .interest-form button {
       width: 100%;
-      padding: 11px;
+      padding: 14px;
       border: none;
-      border-radius: 8px;
-      background: var(--accent);
-      color: #1a1a1a;
+      border-radius: 50px;
+      background: var(--gradient);
+      color: #0a0a0a;
+      font-family: var(--font-hero);
       font-size: 14px;
-      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       cursor: pointer;
-      font-family: var(--font);
-      transition: opacity 0.2s, transform 0.2s;
+      transition: all 0.35s var(--ease);
     }
 
     .interest-form button:hover {
-      opacity: 0.9;
-      transform: scale(1.01);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(217, 70, 239, 0.25);
+      opacity: 0.92;
     }
 
     .interest-form button:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
       transform: none;
     }
@@ -504,7 +528,10 @@
     .form-success {
       text-align: center;
       padding: 12px 0;
-      color: #16a34a;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-weight: 600;
       font-size: 14px;
     }
@@ -519,7 +546,7 @@
     /* Responsive */
     @media (max-width: 480px) {
       .profile-name {
-        font-size: 24px;
+        font-size: 30px;
       }
       .profile-bio {
         font-size: 14px;
@@ -527,13 +554,23 @@
       .avatar-hero {
         max-width: 320px;
       }
+      .profile {
+        padding-top: 24px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="preloader" id="preloader"><div class="preloader-spinner"></div></div>
 
-<div class="share-toast" id="shareToast"></div>
+  <!-- Ambient blob background -->
+  <div class="page-blobs">
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+    <div class="blob-3"></div>
+  </div>
+
+  <div class="share-toast" id="shareToast"></div>
   <main class="container">
     <section class="profile" id="profile"></section>
     <section class="links-container" id="linksContainer"></section>
@@ -578,36 +615,15 @@
     }
 
     function applyTheme(theme) {
+      // Theme is now baked into CSS — this function kept for admin preview compatibility
       const root = document.documentElement;
       if (theme.background) {
-        if (theme.background.type === 'gradient' && theme.background.colors) {
-          const stops = theme.background.colors.map((c, i) =>
-            `${c} ${Math.round((i / (theme.background.colors.length - 1)) * 100)}%`
-          ).join(', ');
-          document.body.style.background = `linear-gradient(${theme.background.angle || 180}deg, ${stops})`;
-          document.body.style.backgroundAttachment = 'fixed';
-        } else if (theme.background.type === 'solid') {
-          document.body.style.background = theme.background.colors[0] || '#6c3bf5';
+        if (theme.background.type === 'solid') {
+          document.body.style.background = theme.background.colors[0] || '#09090F';
         }
       }
-      root.style.setProperty('--accent', theme.accent || '#FFD700');
-      root.style.setProperty('--name-color', theme.nameColor || theme.accent || '#FFD700');
-      root.style.setProperty('--bio-color', theme.bioColor || '#ffffff');
-      root.style.setProperty('--card-bg', theme.cardBackground || '#ffffff');
-      root.style.setProperty('--card-text', theme.cardText || '#1a1a1a');
-      root.style.setProperty('--card-radius', theme.cardBorderRadius || '12px');
-      root.style.setProperty('--card-hover-scale', theme.cardHoverScale || '1.03');
-      root.style.setProperty('--section-title-color', theme.sectionTitleColor || theme.accent || '#FFD700');
-      root.style.setProperty('--social-icon-color', theme.socialIconColor || theme.accent || '#FFD700');
       if (theme.font) {
         root.style.setProperty('--font', theme.font);
-        document.body.style.fontFamily = theme.font;
-      }
-      // Animated gradient
-      if (theme.background && theme.background.type === 'gradient' && theme.background.animated !== false) {
-        document.body.classList.add('animated-bg');
-      } else {
-        document.body.classList.remove('animated-bg');
       }
     }
 
@@ -680,7 +696,7 @@
                 <input type="text" placeholder="Your city / location" id="${formId}-location" required>
                 <input type="text" placeholder="Your name" id="${formId}-name" required>
                 <input type="email" placeholder="Your email" id="${formId}-email" required>
-                <p style="font-size:13px;color:#666;margin:4px 0 8px;line-height:1.4">We'll email you when we're heading to your area!</p>
+                <p style="font-size:13px;color:var(--text-muted);margin:4px 0 12px;line-height:1.4">We'll email you when we're heading to your area!</p>
                 <button onclick="event.stopPropagation();submitTourRequest('${formId}')" id="${formId}-btn">
                   Let Us Know
                 </button>
@@ -745,7 +761,12 @@ Express Interest</span>
     function renderFooter(config) {
       const el = document.getElementById('footer');
       if (config.footer && config.footer.show && config.footer.text) {
-        el.textContent = config.footer.text;
+        const parts = config.footer.text.split('—').map(s => s.trim());
+        if (parts.length >= 2) {
+          el.innerHTML = `<div class="footer-brand">${esc(parts[0])}</div><div class="footer-sign-off">${esc(parts[1])}</div>`;
+        } else {
+          el.innerHTML = `<div class="footer-brand">${esc(config.footer.text)}</div>`;
+        }
         el.style.display = 'block';
       } else {
         el.style.display = 'none';
@@ -881,7 +902,6 @@ Express Interest</span>
         if (views.length > 10000) views.splice(0, views.length - 10000);
         localStorage.setItem('linktree_views', JSON.stringify(views));
       } catch (e) {}
-      // Also send to Supabase
       fetch(SUPABASE_URL + '/rest/v1/page_views', {
         method: 'POST',
         headers: {
@@ -904,7 +924,6 @@ Express Interest</span>
         if (clicks.length > 10000) clicks.splice(0, clicks.length - 10000);
         localStorage.setItem('linktree_clicks', JSON.stringify(clicks));
       } catch (e) {}
-      // Also send to Supabase
       fetch(SUPABASE_URL + '/rest/v1/link_clicks', {
         method: 'POST',
         headers: {
@@ -922,12 +941,10 @@ Express Interest</span>
       }).catch(() => {});
     }
 
-    // Track page view (skip if in preview iframe)
     if (window === window.top) {
       trackView();
     }
 
-    // Track link clicks via event delegation
     document.getElementById('linksContainer').addEventListener('click', (e) => {
       const card = e.target.closest('.link-card');
       if (card && window === window.top) {

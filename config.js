@@ -1,6 +1,6 @@
 const SITE_CONFIG = {
   "profile": {
-    "name": "Nic Huzz",
+    "name": "Huzz",
     "bio": "The Rave Guide | Playful Rebel",
     "photo": "assets/profile.jpg",
     "photoStyle": "circle"
@@ -19,25 +19,19 @@ const SITE_CONFIG = {
   ],
   "theme": {
     "background": {
-      "type": "gradient",
-      "colors": [
-        "#c4b5f0",
-        "#6c3bf5",
-        "#3a0f98"
-      ],
-      "angle": 180,
-      "animated": true
+      "type": "solid",
+      "colors": ["#09090F"]
     },
-    "accent": "#FFD700",
-    "nameColor": "#FFD700",
-    "bioColor": "#ffffff",
-    "cardBackground": "#ffffff",
-    "cardText": "#1a1a1a",
-    "cardBorderRadius": "12px",
-    "cardHoverScale": "1.03",
-    "sectionTitleColor": "#FFD700",
-    "socialIconColor": "#FFD700",
-    "font": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    "accent": "#D946EF",
+    "nameColor": "gradient",
+    "bioColor": "#b0aab8",
+    "cardBackground": "transparent",
+    "cardText": "#F0ECF5",
+    "cardBorderRadius": "16px",
+    "cardHoverScale": "1.0",
+    "sectionTitleColor": "#D946EF",
+    "socialIconColor": "#b0aab8",
+    "font": "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
   },
   "sections": [
     {
@@ -79,10 +73,10 @@ const SITE_CONFIG = {
       ]
     },
     {
-      "title": "Join the Vibe Rise Movement",
+      "title": "Vibe Rise",
       "links": [
         {
-          "title": "Click here to learn how",
+          "title": "Join the Vibe Rise Movement",
           "url": "https://findmyflow.nichuzz.com/",
           "thumbnail": "assets/thumbnails/findmyflow.png",
           "enabled": true
@@ -91,12 +85,12 @@ const SITE_CONFIG = {
     }
   ],
   "seo": {
-    "title": "Nic Huzz | Links",
-    "description": "On a mission to make healing fun",
+    "title": "Huzz | Links",
+    "description": "The Rave Guide — Guided rave experiences at iconic locations",
     "ogImage": "assets/profile.jpg"
   },
   "footer": {
-    "show": false,
-    "text": ""
+    "show": true,
+    "text": "Huzz — The Rave Guide"
   }
 };
